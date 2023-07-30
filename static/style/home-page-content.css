@@ -1,0 +1,25 @@
+.main-container{
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    margin: 180px;
+    background: darkgrey;
+
+}
+
+.image-container{
+    width: 500px;
+    height: 500px;
+    padding-top: 30px;
+}
+
+.text-container{
+    color: white;
+    text-align: center;
+    font-size: 48px;
+    font-family: Helvetica, sans-serif;
+}
+
+
+
+
+

@@ -1,0 +1,27 @@
+{% load custom_tags %}
+{% load static %}
+
+<header>
+        <!-- Navigation Bar -->
+        <nav>
+            <div class="nav-container">
+                <div id="BooksFaceNav">
+                    <h3><a href='{% url 'home-page' %}'>BookFace</a></h3>
+                </div>
+                <div class="nav-ul-container">
+                    <ul>
+                        <li><a href="{% url 'books-display' %}">Books</a></li>
+                        <li><a href="{% url 'authors-display' %}">Authors</a></li>
+                        <li><a href="{% url 'publishers-display' %}">Publishers</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'profile-details' pk=request.user.pk %}"><img src="{% static 'images/Default-Profile-Picture.png' %}" alt="profile picture"></a></li>
+                        <li id="LogOutButton"><a href="{% url 'logout' %}">Log out</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Sign In</a></li>
+                        <li><a href="{% url 'profile-create' %}">Sign up</a></li>
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+</header>

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/home-page-content.css' %}"/>
+{% endblock %}
+{% block content %}
+    <main>
+        <div class="main-container">
+            <div class="text-container">
+                <p><b>Read</b> your <i>favourite book</i>.</p>
+                <p><b>Search</b> information about your <i>favourite book</i>, its author and publisher.</p>
+                <p><b>Write</b> review about your <i>favourite book</i>.</p>
+                <p><b>Read</b> other reviews about your <i>favourite book</i>.</p>
+            </div>
+            <div class="image-container">
+                <img src="{% static 'images/book-author-editor-img-round.png'%}" alt="home-page-image" width=470px>
+            </div>
+        </div>
+    </main>
+{% endblock %}

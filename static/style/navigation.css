@@ -1,0 +1,96 @@
+/* Reset some default styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Style the navigation */
+nav {
+    position: fixed;
+    background-color: #333;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: 2px solid white;
+
+}
+
+nav .nav-ul-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 30px;
+    display: flex;
+    float: right;
+}
+
+/* Style the navigation links */
+nav  a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    transition: background-color 0.3s;
+}
+
+/* Hover effect for the navigation links */
+nav .nav-ul-container a:hover {
+    background-color: #555;
+}
+
+nav .nav-ul-container li{
+    margin-right: 50px;
+
+}
+
+nav .nav-ul-container li:nth-child(3){
+    margin-right: 100px;
+}
+
+/* Style the "Sign In" and "Sign up" links */
+nav .nav-ul-container li:nth-last-child(-n+2) a {
+  background-color: #4CAF50;
+  border-radius: 4px;
+}
+
+/* Media query for responsiveness */
+@media screen and (max-width: 600px) {
+  nav .nav-ul-container ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav .nav-ul-container li:nth-last-child(-n+2) {
+    margin-top: 10px;
+  }
+}
+
+.nav-container{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+#BooksFaceNav{
+    margin-left: 150px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.nav-container #BooksFaceNav h3{
+    display: inline;
+}
+
+.nav-container #BooksFaceNav a:hover{
+    font-weight: bold;
+}
+
+.nav-container #BooksFaceNav  a{
+    font-size: 28px;
+    padding-bottom: 30px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+#LogOutButton a{
+    background: indianred;
+}
+

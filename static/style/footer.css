@@ -1,0 +1,27 @@
+
+.footer-container{
+    background-color: #555;
+    color: white;
+    margin-bottom: 0;
+    padding-bottom: 32px;
+    padding-top: 30px;
+    border-top: 2px solid white;
+    text-align: center;
+}
+
+.social-icons a{
+    margin-right: 100px;
+    text-decoration: none;
+}
+
+.social-icons a:hover{
+    font-weight: bold;
+
+}
+
+.social-icons{
+    padding-left: 100px;
+}
+
+
+

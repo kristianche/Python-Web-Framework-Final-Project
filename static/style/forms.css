@@ -1,0 +1,75 @@
+/* Form container */
+.form-container {
+  max-width: 400px;
+  margin: 200px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form input fields */
+.form-container input,
+.form-container textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.form-title{
+  text-align: center;
+  color:gray;
+}
+
+/* Form input placeholder styles */
+.form-container input::placeholder,
+.form-container textarea::placeholder {
+  color: #999;
+}
+
+/* Form input focus styles */
+.form-container input:hover{
+  border-color: #6cb2eb;
+  box-shadow: 0 0 5px rgba(108, 178, 235, 0.5);
+}
+
+/* Form submit button */
+.form-container .form-button{
+  background-color: #6cb2eb;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.form-container .form-button:hover {
+  background-color: #4b9be0;
+}
+
+/* Form success message */
+.form-container .success-message {
+  color: #4CAF50;
+}
+
+/* Form error message */
+.form-container .error-message {
+  color: #f44336;
+}
+
+.form-help-text, .form-help-text a{
+  text-align: center;
+  color:gray;
+  text-decoration: none;
+  margin-bottom: 30px;
+}
+
+.form-help-text a:hover{
+  font-size: 15px;
+}

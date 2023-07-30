@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <nav>
+            <ul>
+
+                <li><a id="BooksFaceNav" href='#'>BookFace</a></li>
+                <li><a href="#">Books</a></li>
+                <li><a href="#">Authors</a></li>
+                <li><a href="#">Publishers</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="{% url 'logout' %}">Log out</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Sign In</a></li>
+                    <li><a href="#">Sign up</a></li>
+                {% endif %}
+            </ul>
+    </nav>
+    <main>
+        <p><b>Read</b> your <i>favourite book</i>.</p>
+        <p><b>Search</b> information about your <i>favourite book</i>, it's author and publisher.</p>
+        <p><b>Write</b> review about your <i>favourite book</i>.</p>
+        <p><b>Read</b> other reviews about your <i>favourite book</i>.</p>
+    </main>
+    <footer>
+        &copy;BooksFace. All rights reserved.
+    </footer>
+</body>
+</html>
