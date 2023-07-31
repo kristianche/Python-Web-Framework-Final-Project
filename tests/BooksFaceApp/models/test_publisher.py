@@ -34,12 +34,12 @@ class PublisherModelTest(TestCase):
             publisher = Publisher.objects.create(**publisher_data)
             publisher.full_clean()
 
-        self.assertEqual(str(context.exception), Publisher.PUBLISHER_NAME_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE)
+        self.assertEqual(str(context.exception.messages[0]), Publisher.PUBLISHER_NAME_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE)
 
     def test_description_max_length_raises_error(self):
         publisher_data = self.publisher_data.copy()
         publisher_data['description'] = 'A' * (Publisher.DESCRIPTION_MAX_LENGTH + 1)
-        with self.assertRaises(ValidationError) as context:
+        with self.assertRaises(ValidationError):
             publisher = Publisher.objects.create(**publisher_data)
             publisher.full_clean()
 
