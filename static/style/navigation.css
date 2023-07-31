@@ -1,10 +1,8 @@
-/* Reset some default styles */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
-/* Style the navigation */
 nav {
     position: fixed;
     background-color: #333;
@@ -15,7 +13,36 @@ nav {
 
 }
 
-nav .nav-ul-container ul {
+.nav-container{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+#BooksFaceNav{
+    margin-left: 150px;
+    margin-top: 0;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#BooksFaceNav h3{
+    display: inline;
+}
+
+#BooksFaceNav  a{
+    font-size: 28px;
+    padding-bottom: 0;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+.nav-container #BooksFaceNav a:hover{
+    font-weight: bold;
+}
+
+.nav-ul-container ul {
     list-style: none;
     margin: 0;
     padding: 30px;
@@ -23,33 +50,31 @@ nav .nav-ul-container ul {
     float: right;
 }
 
-/* Style the navigation links */
-nav  a {
+nav .nav-ul-container li{
+    margin-right: 50px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+
+}
+
+.nav-ul-container a {
     color: white;
     text-decoration: none;
     padding: 12px 20px;
     transition: background-color 0.3s;
 }
 
-/* Hover effect for the navigation links */
-nav .nav-ul-container a:hover {
+.nav-ul-container a:hover {
     background-color: #555;
-}
-
-nav .nav-ul-container li{
-    margin-right: 50px;
-    margin-top: 14px;
-
 }
 
 .nav-auth-buttons{
     margin-right: 100px;
 }
 
-/* Style the "Sign In" and "Sign up" links */
 .nav-auth-buttons a {
   background-color: #4CAF50;
-  border-radius: 4px;
+  border-radius: 30px;
 }
 
 .nav-auth-buttons a:hover{
@@ -63,11 +88,15 @@ nav .nav-ul-container li{
 
 #ProfileImage a{
     background: none;
+    padding: 0;
+    margin: 0;
 }
 
 #ProfileImage {
     margin-top: 0;
     margin-left: 90px;
+    margin-right: 30px;
+    margin-bottom: 0;
 }
 
 /* Media query for responsiveness */
@@ -82,42 +111,16 @@ nav .nav-ul-container li{
   }
 }
 
-.nav-container{
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-}
-
-#BooksFaceNav{
-    margin-left: 150px;
-    margin-top: 14px;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-}
-
-.nav-container #BooksFaceNav h3{
-    display: inline;
-
-}
-
-.nav-container #BooksFaceNav a:hover{
-    font-weight: bold;
-}
-
-.nav-container #BooksFaceNav  a{
-    font-size: 28px;
-    padding-bottom: 30px;
-    color: white;
-    text-decoration: none;
-    text-align: center;
-}
-
 #LogOutButton a {
     cursor: pointer;
-    background: none;
     background: indianred;
-
+    border-radius: 30px;
+    transition: background-color 0.3s;
 }
-
+#LogOutButton a:hover{
+    color: indianred;
+    background-color: white;
+}
 #LogOutButton{
     margin-top: 14px;
 }
