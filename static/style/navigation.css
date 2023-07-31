@@ -53,8 +53,8 @@ nav .nav-ul-container li{
 }
 
 .nav-auth-buttons a:hover{
-    color: #4CAF50;
-    background: white;
+    color: #4CAF50 !important;
+    background: white !important;
 }
 
 #ProfileImage a:hover{
