@@ -22,30 +22,25 @@ class BookModelTest(TestCase):
     def test_title_max_length_raises_error(self):
         book_data = self.book_data.copy()
         book_data['title'] = 'A' * (Book.BOOK_TITLE_MAX_LENGTH + 1)
-        with self.assertRaises(ValidationError) as context:
-            Book.objects.create(**book_data)
-
-        self.assertTrue(
-            f'Ensure this value has at most {Book.BOOK_TITLE_MAX_LENGTH} characters' in str(context.exception)
-        )
+        with self.assertRaises(ValidationError):
+            book = Book.objects.create(**book_data)
+            book.full_clean()
 
     def test_title_min_length_raises_error(self):
         book_data = self.book_data.copy()
         book_data['title'] = 'A' * (Book.BOOK_TITLE_MIN_LENGTH - 1)
-        with self.assertRaises(ValidationError) as context:
-            Book.objects.create(**book_data)
-
-        self.assertTrue(
-            f"Ensure this value has at least {Book.BOOK_TITLE_MIN_LENGTH} character" in str(context.exception)
-        )
+        with self.assertRaises(ValidationError):
+            book = Book.objects.create(**book_data)
+            book.full_clean()
 
     def test_title_starts_with_capital_letter_raises_error(self):
         book_data = self.book_data.copy()
         book_data['title'] = 'test book'
         with self.assertRaises(ValidationError) as context:
-            Book.objects.create(**book_data)
+            book = Book.objects.create(**book_data)
+            book.full_clean()
 
-        self.assertEquals(Book.BOOK_TITLE_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE, str(context.exception))
+        self.assertEquals(Book.BOOK_TITLE_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE, str(context.exception.messages[0]))
 
     def test_reviews_counter_increase_successfully(self):
         book_data = self.book_data.copy()

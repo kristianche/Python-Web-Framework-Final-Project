@@ -14,7 +14,7 @@ class Profile(auth_model.AbstractUser):
     LOCATION_MIN_LENGTH = 2
     FIRST_NAME_CHECK_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE = 'The first name must start with a capital letter!'
     LAST_NAME_CHECK_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE = 'The last name must start with a capital letter!'
-    LOCAL_LOCATION_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE = 'The name ofthe  city/town/village must start with a capital letter!'
+    LOCAL_LOCATION_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE = 'The name of the  city/town/village must start with a capital letter!'
     COUNTRY_LOCATION_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE = "The country's name must start with a capital letter!"
     SEX_CHOICES = (
         ('Male', 'Male'),
@@ -57,10 +57,10 @@ class Profile(auth_model.AbstractUser):
             check_password_number
         ]
     )
-    profile_image = models.ImageField(
+    profile_image = models.URLField(
         null=True,
         blank=True,
-        upload_to='profile_images'
+        unique=True
     )
     password2 = models.CharField(
         null=False,
@@ -119,10 +119,10 @@ class Author(models.Model):
     FIRST_NAME_STARTS_WITH_CAPITAL_LETTER = 'The first name of the author must start with a capital letter!'
     LAST_NAME_STARTS_WITH_CAPITAL_LETTER = 'The last name of the author must start with a capital letter!'
 
-    image = models.ImageField(
+    image = models.URLField(
         null=True,
         blank=True,
-        upload_to='authors_images'
+        unique=True
     )
     first_name = models.CharField(
         null=False,
@@ -173,10 +173,10 @@ class Publisher(models.Model):
     DESCRIPTION_MAX_LENGTH = 1000
     PUBLISHER_NAME_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE = 'The name of the publisher must start with a capital letter!'
 
-    image = models.ImageField(
+    image = models.URLField(
         null=True,
         blank=True,
-        upload_to='publisher_images'
+        unique=True
     )
     name = models.CharField(
         null=False,
@@ -282,10 +282,10 @@ class Book(models.Model):
         verbose_name='Author'
     )
 
-    image = models.ImageField(
+    image = models.URLField(
         null=True,
         blank=True,
-        upload_to='book_images',
+        unique=True,
         verbose_name='Image URL'
     )
 

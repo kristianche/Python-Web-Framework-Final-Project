@@ -14,11 +14,11 @@
                         <li><a href="{% url 'authors-display' %}">Authors</a></li>
                         <li><a href="{% url 'publishers-display' %}">Publishers</a></li>
                     {% if request.user.is_authenticated %}
-                        <li><a href="{% url 'profile-details' pk=request.user.pk %}"><img src="{% static 'images/Default-Profile-Picture.png' %}" alt="profile picture"></a></li>
+                        <li id="ProfileImage"><a href="{% url 'profile-details' pk=request.user.pk %}"><img src="{% static 'images/Default-Profile-Picture.png' %}" alt="profile picture" width=40px></a></li>
                         <li id="LogOutButton"><a href="{% url 'logout' %}">Log out</a></li>
                     {% else %}
-                        <li><a href="{% url 'login' %}">Sign In</a></li>
-                        <li><a href="{% url 'profile-create' %}">Sign up</a></li>
+                        <li class="nav-auth-buttons"><a href="{% url 'login' %}">Sign In</a></li>
+                        <li class="nav-auth-buttons"><a href="{% url 'profile-create' %}">Sign up</a></li>
                     {% endif %}
                     </ul>
                 </div>

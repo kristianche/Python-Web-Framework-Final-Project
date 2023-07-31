@@ -38,17 +38,36 @@ nav .nav-ul-container a:hover {
 
 nav .nav-ul-container li{
     margin-right: 50px;
+    margin-top: 14px;
 
 }
 
-nav .nav-ul-container li:nth-child(3){
+.nav-auth-buttons{
     margin-right: 100px;
 }
 
 /* Style the "Sign In" and "Sign up" links */
-nav .nav-ul-container li:nth-last-child(-n+2) a {
+.nav-auth-buttons a {
   background-color: #4CAF50;
   border-radius: 4px;
+}
+
+.nav-auth-buttons a:hover{
+    color: #4CAF50;
+    background: white;
+}
+
+#ProfileImage a:hover{
+    cursor: pointer;
+}
+
+#ProfileImage a{
+    background: none;
+}
+
+#ProfileImage {
+    margin-top: 0;
+    margin-left: 90px;
 }
 
 /* Media query for responsiveness */
@@ -70,12 +89,14 @@ nav .nav-ul-container li:nth-last-child(-n+2) a {
 
 #BooksFaceNav{
     margin-left: 150px;
+    margin-top: 14px;
     display: grid;
     grid-template-columns: 1fr 2fr;
 }
 
 .nav-container #BooksFaceNav h3{
     display: inline;
+
 }
 
 .nav-container #BooksFaceNav a:hover{
@@ -90,7 +111,17 @@ nav .nav-ul-container li:nth-last-child(-n+2) a {
     text-align: center;
 }
 
-#LogOutButton a{
+#LogOutButton a {
+    cursor: pointer;
+    background: none;
     background: indianred;
+
 }
+
+#LogOutButton{
+    margin-top: 14px;
+}
+
+
+
 
