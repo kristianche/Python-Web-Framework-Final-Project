@@ -155,3 +155,10 @@ class ProfileDeleteForm(ProfileCreateForm):
             field.widget.attrs['disabled'] = 'disabled'
             field.required = False
 
+
+class BookSearchForm(forms.Form):
+    search_query = forms.CharField(
+        label='',
+        max_length=100,
+        widget=forms.TextInput(attrs={'placeholder': 'Search Book'})
+    )
