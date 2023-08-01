@@ -14,6 +14,8 @@ from pathlib import Path
 
 from django.urls import reverse_lazy
 
+import BooksFace.BooksFaceApp.validators
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -107,6 +109,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'BooksFace.BooksFaceApp.validators.check_password_number',
+    },
+    {
+        'NAME': 'BooksFace.BooksFaceApp.validators.check_password_special_symbol',
+    },
+    {
+        'NAME': 'BooksFace.BooksFaceApp.validators.check_password_lowercase_letter',
+    },
+    {
+        'NAME': 'BooksFace.BooksFaceApp.validators.check_password_capital_letter',
     },
 ]
 
