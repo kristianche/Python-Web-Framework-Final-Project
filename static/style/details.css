@@ -1,0 +1,98 @@
+.details-container{
+    background-color: lightgray;
+    border-radius: 30px;
+    border: 2px solid black;
+    margin: 200px 120px;
+    height: 800px;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 70% 30%;
+    grid-column-gap: 30px;
+    grid-row-gap: 10px;
+}
+
+.image-container-details img{
+    width: 350px;
+    padding: 5px;
+}
+
+.image-container-details{
+    margin: 20px;
+}
+
+.text-container-details .book-info{
+    background-color: darkgrey;
+    border: solid 2px black;
+    border-radius: 30px;
+    padding: 20px;
+    width: 800px;
+    margin-top: 30px;
+    color: snow;
+    text-align: center;
+}
+
+.text-container{
+    display: grid;
+    grid-template-columns: 800px 200px;
+    grid-column-gap: 200px;
+}
+
+.book-description{
+    background-color: darkgrey;
+    border: solid 2px black;
+    border-radius: 30px;
+    padding: 20px;
+    width: 350px;
+    height: 680px;
+    margin-top: 30px;
+    color: snow;
+    text-align: left;
+    padding-left: 60px;
+}
+
+.book-description p{
+    font-size: 25px;
+    padding: 0;
+    text-align: justify;
+    padding-right: 25px;
+    color: snow;
+    overflow: auto;
+}
+
+.book-description h2{
+    text-align: center;
+    color: snow;
+    padding-left: 0;
+}
+
+.buttons-container-details button{
+    display: inline;
+    width: 170px;
+    height: 60px;
+    padding: 12px 20px;
+    border-radius: 30px;
+    background-color: gray;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10%;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.buttons-container-details button:hover{
+    background-color: black;
+}
+
+.buttons-container-details a, button{
+    text-decoration: none;
+}
+
+
+.buttons-container-details{
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+}
+
