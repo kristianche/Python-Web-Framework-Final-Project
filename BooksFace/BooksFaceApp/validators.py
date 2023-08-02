@@ -5,26 +5,26 @@ import re
 
 
 def check_password_capital_letter(value):
-    pattern = r'[A-Z]'
-    if not re.match(value, pattern):
+    pattern = r'[A-Z]+'
+    if not re.search(value, pattern):
         raise ValidationError('Password must contain at least one capital letter!')
 
 
 def check_password_number(value):
-    pattern = r'[0-9]'
-    if not re.match(value, pattern):
+    pattern = r'\d+'
+    if not re.search(value, pattern):
         raise ValidationError('Password must contain at least one number!')
 
 
 def check_password_lowercase_letter(value):
     pattern = r'[a-z]'
-    if not re.match(value, pattern):
+    if not re.search(value, pattern):
         raise ValidationError('Password must contain at least one lowercase letter!')
 
 
 def check_password_special_symbol(value):
-    pattern = r'[!@#$%^&*(),.?":{}|<>]'
-    if not re.match(value, pattern):
+    pattern = r".*[^a-zA-Z0-9].*+"
+    if not re.search(value, pattern):
         raise ValidationError('Password must contain at least one special symbol!')
 
 
@@ -34,6 +34,5 @@ class CheckStartsWithCapitalLetter(BaseValidator):
         self.text = text
 
     def __call__(self, value):
-        pattern = r'[A-Z]'
-        if not re.match(value, pattern):
+        if not value[0] == value[0].upper():
             raise ValidationError(self.text)

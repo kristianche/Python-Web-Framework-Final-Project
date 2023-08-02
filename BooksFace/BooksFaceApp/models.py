@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MaxLengthValidator, MinLengthValidator, MinValueValidator, MaxValueValidator
@@ -103,6 +105,11 @@ class Profile(auth_model.AbstractUser):
             CheckStartsWithCapitalLetter(text=COUNTRY_LOCATION_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE)]
     )
 
+    def age(self):
+        today = date.today()
+        age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+        return age
+
     def __str__(self):
         return self.username
 
@@ -112,6 +119,9 @@ class Profile(auth_model.AbstractUser):
 
 
 class Author(models.Model):
+
+    class Meta:
+        ordering = ['first_name', 'last_name']
 
     AUTHOR_NAME_MAX_LENGTH = 120
     AUTHOR_NAME_MIN_LENGTH = 2
@@ -146,9 +156,24 @@ class Author(models.Model):
         ]
     )
 
+    city = models.CharField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='City'
+    )
+
+    country = models.CharField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Birth Country'
+    )
+
     biography = models.TextField(
         null=True,
         blank=True,
+        default=None,
         verbose_name='Biography',
         validators=[MaxLengthValidator(BIOGRAPHY_MAX_LENGTH)]
     )
@@ -158,6 +183,18 @@ class Author(models.Model):
         blank=False,
         verbose_name='Created by',
     )
+
+    birthday = models.DateField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Birthday',
+    )
+
+    def age(self):
+        today = date.today()
+        age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+        return age
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -283,8 +320,8 @@ class Book(models.Model):
     )
 
     image = models.URLField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         unique=True,
         verbose_name='Image URL'
     )
@@ -323,6 +360,12 @@ class Book(models.Model):
         default=0,
         verbose_name='Reviews'
     )
+    likes = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        default=0,
+        verbose_name='Likes'
+    )
 
     created_by = models.CharField(
         null=False,
@@ -335,6 +378,9 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['-reviews_counter', 'title']
 
 
 class ReviewBook(models.Model):
@@ -380,7 +426,8 @@ class ReviewBook(models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        verbose_name='Book'
+        verbose_name='Book',
+        related_name='review'
     )
 
     likes = models.PositiveIntegerField(

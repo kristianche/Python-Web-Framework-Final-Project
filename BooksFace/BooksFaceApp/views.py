@@ -1,8 +1,11 @@
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
+
+from .forms import BookSearchForm, AuthorSearchForm
 from .models import Book, Author, Publisher, Profile
 from . import forms
 from django.contrib.auth import views as auth_views
@@ -16,6 +19,17 @@ class Books(generic.ListView):
     model = Book
     context_object_name = 'books'
     template_name = 'books/books-display.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('search_query')
+        if query:
+            return Book.objects.filter(title__icontains=query)
+        return Book.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_form'] = BookSearchForm()
+        return context
 
 
 class BookDetails(generic.DetailView):
@@ -56,6 +70,19 @@ class Authors(generic.ListView):
     model = Author
     context_object_name = 'authors'
     template_name = 'author/authors-display.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('search_query')
+        if query:
+            return Author.objects.filter(
+                Q(first_name__icontains=query) | Q(last_name__icontains=query)
+            )
+        return Author.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_form'] = AuthorSearchForm()
+        return context
 
 
 class AuthorDetails(generic.DetailView):
@@ -174,4 +201,8 @@ class Login(auth_views.LoginView):
     template_name = 'common/login.html'
     success_url = reverse_lazy('home-page')
     redirect_authenticated_user = True
+
+
+class ReviewCreate(generic.CreateView):
+    pass
 

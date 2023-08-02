@@ -162,3 +162,11 @@ class BookSearchForm(forms.Form):
         max_length=100,
         widget=forms.TextInput(attrs={'placeholder': 'Search Book'})
     )
+
+
+class AuthorSearchForm(forms.Form):
+    search_query = forms.CharField(
+        label='',
+        max_length=100,
+        widget=forms.TextInput(attrs={'placeholder': 'Search Author'})
+    )
