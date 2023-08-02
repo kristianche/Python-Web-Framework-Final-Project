@@ -60,7 +60,7 @@ class AuthorModelTest(TestCase):
             author.full_clean()
 
         self.assertEquals(
-            f"{Author.LAST_NAME_STARTS_WITH_CAPITAL_LETTER}", str(context.exception.messages[1])
+            f"{Author.LAST_NAME_STARTS_WITH_CAPITAL_LETTER}", str(context.exception.messages[0])
         )
 
     def test_biography_max_length_raises_error(self):

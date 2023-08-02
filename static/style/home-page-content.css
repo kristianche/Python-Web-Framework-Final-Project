@@ -1,7 +1,7 @@
 .main-container{
     display: grid;
     grid-template-columns: 4fr 1fr;
-    margin: 180px;
+    margin: 120px;
     background: darkgrey;
 
 }

@@ -1,0 +1,12 @@
+    <div class="search-container">
+            <form method="get">
+                {% csrf_token %}
+                <div class="search-input-container">
+                    {{ search_form }}
+                    <button type="submit" class="search-button">Search</button>
+                </div>
+            </form>
+    </div>
+    <a href="{% url 'book-create' %}">
+        <button id='CreateBookButton' type="submit">Create Book</button>
+    </a>

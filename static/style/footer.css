@@ -1,5 +1,6 @@
 
 .footer-container{
+    position: absolute;
     background-color: #555;
     color: white;
     margin-bottom: 0;
@@ -7,6 +8,7 @@
     padding-top: 30px;
     border-top: 2px solid white;
     text-align: center;
+    width: 100%;
 }
 
 .social-icons a{

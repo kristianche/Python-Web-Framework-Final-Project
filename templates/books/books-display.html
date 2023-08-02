@@ -3,10 +3,37 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'style/box.css' %}">
+    <link rel="stylesheet" href="{% static 'style/searchbar-and-create-button.css' %}">
 {% endblock %}
 
 {% block content %}
     <main>
+        {% include 'components/searchbar-and-create-button.html' %}
+        <div class="boxes-container">
+            {% for book in books %}
+            <div class="box-container">
+                <div class="image-container">
+                    {% if book.image %}
+                    <img src="{{ book.image }}" alt="book-image">
+                    {% else %}
+                    <img src="{% static 'images/book-favicon.png'%}" alt="book-default-image">
+                    {% endif %}
+                </div>
+                <div class="text-container">
+                    <h2>{{ book.title }}</h2>
+                    <h2>{{ book.author }}</h2>
+                    <h2>{{ book.genre }}</h2>
+                    <h2>Reviews: {{ book.reviews_counter }}</h2>
+                </div>
+            <a>
+                <button type="button">Details</button>
+            </a>
+            <a>
+                 <button type="button">Write Review</button>
+            </a>
 
+            </div>
+            {% endfor %}
+        </div>
     </main>
 {% endblock %}

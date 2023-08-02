@@ -1,1 +1,38 @@
 {% extends 'base.html'%}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/box.css' %}">
+    <link rel="stylesheet" href="{% static 'style/searchbar-and-create-button.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        {% include 'components/searchbar-and-create-button.html' %}
+        <div class="boxes-container">
+            {% for author in authors %}
+            <div class="box-container">
+                <div class="image-container">
+                    {% if author.image %}
+                    <img style="border-radius: 30px;" src="{{ author.image }}" alt="book-image">
+                    {% else %}
+                    <img src="{% static 'images/book-favicon.png'%}" alt="book-default-image">
+                    {% endif %}
+                </div>
+                <div class="text-container">
+                    <h2 style="font-size: 40px;">{{ author.full_name}}</h2>
+                    {% if author.birthday %}
+                        <h2 style="font-size: 40px;">{{ author.age }}</h2>
+                        <h2 style="font-size: 40px;">{{ author.birthday }}</h2>
+                    {% endif %}
+                    <h2 style="font-size: 40px;"> Born in {{author.city }},{{ author.country }}</h2>
+                </div>
+            <a>
+                <button type="button">Details</button>
+            </a>
+
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}
