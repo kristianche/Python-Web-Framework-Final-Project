@@ -159,7 +159,7 @@ class ProfileDeleteForm(ProfileCreateForm):
 class BookSearchForm(forms.Form):
     search_query = forms.CharField(
         label='',
-        max_length=100,
+        max_length=120,
         widget=forms.TextInput(attrs={'placeholder': 'Search Book'})
     )
 
@@ -167,6 +167,6 @@ class BookSearchForm(forms.Form):
 class AuthorSearchForm(forms.Form):
     search_query = forms.CharField(
         label='',
-        max_length=100,
+        max_length=120,
         widget=forms.TextInput(attrs={'placeholder': 'Search Author'})
     )
