@@ -1,1 +1,52 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/details.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="details-container">
+            <div class="image-container-details">
+                <img src="{{ author.image }}" alt="book-image">
+            </div>
+            <div class="text-container">
+                <div class="text-container-details">
+                    <h2 class="book-info"> Name: {{ author.full_name }}</h2>
+                    <h2 class="book-info"> Birth City: {{ author.city }}</h2>
+                    <h2 class="book-info"> Birth Country: {{ author.country }}</h2>
+                    <h2 class="book-info"> Born on: {{ author.birthday}}</h2>
+                    {% if author.dead %}
+                        <h2 class="book-info"> Died on: {{ author.dead }}</h2>
+                    {% else %}
+                        {% if author.birthday %}
+                            <h2 class="book-info"> Age: {{ author.age }}</h2>
+                        {% else %}
+                            <h2 class="book-info"> Age: None</h2>
+                        {% endif %}
+                    {% endif %}
+                    <h2 class="book-info"> Nickname: {{ author.nickname }}</h2>
+                    <h2 class="book-info"> Nationality: {{ author.nationality }}</h2>
+                </div>
+                <div class="book-description">
+                    <h2>Biography</h2>
+                    <p>{{ author.biography }}</p>
+                </div>
+            </div>
+            <div class="buttons-container-details" >
+                <a style="grid-column: span 2; margin-left: 90px">
+                    <button type="button">View Books</button>
+                </a>
+                {% if request.user == author.created_by or request.user.is_superuser %}
+                    <a href="{% url 'author-edit' pk=author.pk %}">
+                        <button type="submit">Edit</button>
+                    </a>
+                    <a href="{% url 'author-delete' pk=author.pk %}">
+                        <button type="submit">Delete</button>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

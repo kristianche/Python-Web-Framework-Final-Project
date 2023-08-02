@@ -1,11 +1,12 @@
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import BookSearchForm, AuthorSearchForm
+from .forms import BookSearchForm, AuthorSearchForm, PublisherSearchForm
 from .models import Book, Author, Publisher, Profile
 from . import forms
 from django.contrib.auth import views as auth_views
@@ -29,13 +30,14 @@ class Books(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['search_form'] = BookSearchForm()
+        context['button_title'] = 'Create Book'
         return context
 
 
 class BookDetails(generic.DetailView):
     model = Book
     context_object_name = 'book'
-    template_name = 'books/books-display.html'
+    template_name = 'books/book-details.html'
 
 
 class BookCreate(generic.CreateView, LoginRequiredMixin):
@@ -44,26 +46,45 @@ class BookCreate(generic.CreateView, LoginRequiredMixin):
     template_name = 'books/book-create.html'
     success_url = reverse_lazy('books-display')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        authors = Author.objects.all()
+        context['authors'] = authors
+        return context
+
     def form_valid(self, form):
         result = super().form_valid(form)
-
-        Book.created_by = self.request.user
-
-        return result
+        title = form['title']
+        if not book_exists(title):
+            Book.created_by = self.request.user
+            return result
+        else:
+            raise ValidationError(f'There is already created a book with name {title}.')
 
 
 class BookEdit(generic.UpdateView, LoginRequiredMixin):
     model = Book
     form_class = forms.BookEditForm
     template_name = 'books/book-edit.html'
-    success_url = reverse_lazy('book-details')
+
+    def get_success_url(self):
+
+        return reverse_lazy('book-details', args=[self.object.pk])
 
 
 class BookDelete(generic.DeleteView, LoginRequiredMixin):
     model = Book
     form_class = forms.BookDeleteForm
-    template_name = 'books/book-create.html'
+    template_name = 'books/book-delete.html'
     success_url = reverse_lazy('books-display')
+
+    def get_form_kwargs(self):
+        instance = self.get_object()
+        form_kwargs = super().get_form_kwargs()
+
+        form_kwargs.update(instance=instance)
+        return form_kwargs
 
 
 class Authors(generic.ListView):
@@ -82,6 +103,7 @@ class Authors(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['search_form'] = AuthorSearchForm()
+        context['button_title'] = 'Create Author'
         return context
 
 
@@ -109,7 +131,10 @@ class AuthorEdit(generic.UpdateView, LoginRequiredMixin):
     model = Author
     form_class = forms.AuthorEditForm
     template_name = 'author/author-edit.html'
-    success_url = reverse_lazy('authors-details')
+
+    def get_success_url(self):
+
+        return reverse_lazy('author-details', args=[self.object.pk])
 
 
 class AuthorDelete(generic.DeleteView, LoginRequiredMixin):
@@ -118,11 +143,30 @@ class AuthorDelete(generic.DeleteView, LoginRequiredMixin):
     template_name = 'author/author-delete.html'
     success_url = reverse_lazy('authors-display')
 
+    def get_form_kwargs(self):
+        instance = self.get_object()
+        form_kwargs = super().get_form_kwargs()
+
+        form_kwargs.update(instance=instance)
+        return form_kwargs
+
 
 class Publishers(generic.ListView):
     model = Publisher
     context_object_name = 'publishers'
     template_name = 'publisher/publishers-display.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('search_query')
+        if query:
+            return Publisher.objects.filter(name__icontains=query)
+        return Publisher.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_form'] = PublisherSearchForm()
+        context['button_title'] = 'Create Publisher'
+        return context
 
 
 class PublisherDetails(generic.DetailView):
@@ -149,7 +193,10 @@ class PublisherEdit(generic.UpdateView, LoginRequiredMixin):
     model = Publisher
     form_class = forms.PublisherEditForm
     template_name = 'publisher/publisher-edit.html'
-    success_url = reverse_lazy('publisher-edit')
+
+    def get_success_url(self):
+
+        return reverse_lazy('publisher-details', args=[self.object.pk])
 
 
 class PublisherDelete(generic.DeleteView, LoginRequiredMixin):
@@ -157,6 +204,13 @@ class PublisherDelete(generic.DeleteView, LoginRequiredMixin):
     form_class = forms.PublisherDeleteForm
     template_name = 'publisher/publisher-delete.html'
     success_url = reverse_lazy('publisher-delete')
+
+    def get_form_kwargs(self):
+        instance = self.get_object()
+        form_kwargs = super().get_form_kwargs()
+
+        form_kwargs.update(instance=instance)
+        return form_kwargs
 
 
 class ProfileDetails(generic.DetailView):
@@ -206,3 +260,11 @@ class Login(auth_views.LoginView):
 class ReviewCreate(generic.CreateView):
     pass
 
+
+
+def book_exists(title):
+    # Use the 'filter' method to check if the book with the given title exists
+    book_queryset = Book.objects.filter(title=title)
+
+    # Check if any book with the given title exists
+    return book_queryset.exists()

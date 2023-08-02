@@ -1,1 +1,39 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/box.css' %}">
+    <link rel="stylesheet" href="{% static 'style/searchbar-and-create-button.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        {% include 'components/searchbar-and-create-button.html' %}
+        <div style="grid-template-columns: repeat(4, 1fr); " class="boxes-container">
+            {% for publisher in publishers %}
+            <div class="box-container-author">
+                <div class="image-container-author">
+                    {% if publisher.image %}
+                    <img  src="{{ publisher.image }}" alt="book-image">
+                    {% else %}
+                    <img src="{% static 'images/book-favicon.png'%}" alt="book-default-image">
+                    {% endif %}
+                </div>
+                <div>
+                    <a>
+                        <button class="button-author" type="button">View Books</button>
+                    </a>
+                    <a href="{% url 'publisher-details' pk=publisher.pk%}">
+                        <button class='button-author' type="button">Details</button>
+                    </a>
+                </div>
+                <div class="text-container-author">
+                    <h2>{{ publisher.name}}</h2>
+                </div>
+
+
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}

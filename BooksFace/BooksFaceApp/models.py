@@ -191,6 +191,27 @@ class Author(models.Model):
         verbose_name='Birthday',
     )
 
+    dead = models.DateField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Died on',
+    )
+
+    nickname = models.CharField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Nickname',
+    )
+
+    nationality = models.CharField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Nationality'
+    )
+
     def age(self):
         today = date.today()
         age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
@@ -247,6 +268,31 @@ class Publisher(models.Model):
         verbose_name='Email'
     )
 
+    founded = models.DateField(
+        null=True,
+        blank=True,
+        unique=True,
+        verbose_name='Founded on'
+    )
+
+    country = models.CharField(
+        null=True,
+        blank=True,
+        unique=True,
+        verbose_name='Central Country'
+    )
+    ceo = models.CharField(
+        null=True,
+        blank=True,
+        unique=True,
+        verbose_name='Ceo'
+    )
+    closed = models.CharField(
+        null=True,
+        blank=True,
+        unique=True,
+        verbose_name='Closed on'
+    )
     created_by = models.CharField(
         null=False,
         blank=False,
@@ -316,7 +362,8 @@ class Book(models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        verbose_name='Author'
+        verbose_name='Author',
+
     )
 
     image = models.URLField(
@@ -330,7 +377,9 @@ class Book(models.Model):
         null=False,
         blank=False,
         choices=GENRE_CHOICES,
-        verbose_name='Genre'
+        verbose_name='Genre',
+
+
     )
 
     publisher = models.ForeignKey(
@@ -339,7 +388,8 @@ class Book(models.Model):
         null=False,
         blank=False,
         default=None,
-        verbose_name='Publisher'
+        verbose_name='Publisher',
+
     )
 
     publication_date_book = models.DateField(

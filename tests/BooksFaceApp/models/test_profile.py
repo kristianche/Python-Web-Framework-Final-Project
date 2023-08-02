@@ -71,7 +71,7 @@ class ProfileModelTest(TestCase):
             profile.full_clean()
 
         self.assertEquals(
-            f"{Profile.LAST_NAME_CHECK_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE}", str(context.exception.messages[1])
+            f"{Profile.LAST_NAME_CHECK_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE}", str(context.exception.messages[0])
         )
 
     def test_password_min_length_raises_error(self):
@@ -88,7 +88,7 @@ class ProfileModelTest(TestCase):
             profile = Profile.objects.create(**profile_data)
             profile.full_clean()
 
-        self.assertEquals("Password must contain at least one capital letter!", str(context.exception.messages[2]))
+        self.assertEquals("Password must contain at least one capital letter!", str(context.exception.messages[0]))
 
     def test_password_must_have_lowercase_letter_raises_error(self):
         profile_data = self.profile_data.copy()
@@ -98,7 +98,7 @@ class ProfileModelTest(TestCase):
             profile.full_clean()
 
         self.assertEquals(
-            'Password must contain at least one lowercase letter!', str(context.exception.messages[3])
+            'Password must contain at least one lowercase letter!', str(context.exception.messages[1])
         )
 
     def test_password_must_have_special_symbol_raises_error(self):
@@ -109,7 +109,7 @@ class ProfileModelTest(TestCase):
             profile.full_clean()
 
         self.assertEquals(
-            'Password must contain at least one special symbol!', str(context.exception.messages[4])
+            'Password must contain at least one special symbol!', str(context.exception.messages[2])
         )
 
     def test_password_must_have_number_raises_error(self):
@@ -120,7 +120,7 @@ class ProfileModelTest(TestCase):
             profile.full_clean()
 
         self.assertEquals(
-            'Password must contain at least one number!', str(context.exception.messages[5])
+            'Password must contain at least one number!', str(context.exception.messages[3])
         )
 
     def test_city_min_length_raises_error(self):

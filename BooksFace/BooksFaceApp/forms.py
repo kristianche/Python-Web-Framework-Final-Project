@@ -3,14 +3,31 @@ from .models import Book, Author, Publisher, Profile
 from django.contrib.auth.forms import UserCreationForm, BaseUserCreationForm
 
 
+class PlaceholderSelect(forms.Select):
+    def __init__(self, attrs=None, choices=(), empty_label=None):
+        super().__init__(attrs, choices)
+        self.empty_label = empty_label
+
+    def create_option(self, *args, **kwargs):
+        option = super().create_option(*args, **kwargs)
+        if 'index' in option and option['index'] == 0 and self.empty_label:
+            option['label'] = self.empty_label
+        return option
+
+
 class BookCreateForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['genre'].widget.attrs['placeholder'] = 'Genre'
+
     class Meta:
         model = Book
-        exclude = ['reviews_counter', 'created_by']
+        exclude = ['reviews_counter', 'created_by', 'likes']
         labels = {
             'title': '',
             'author': '',
-            'image_url': '',
+            'image': '',
             'genre': '',
             'publisher': '',
             'publication_date_book': '',
@@ -19,13 +36,15 @@ class BookCreateForm(forms.ModelForm):
 
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Title'}),
-            'author': forms.TextInput(attrs={'placeholder': 'Author'}),
-            'image_url': forms.URLInput(attrs={'placeholder': 'Image URL'}),
-            'genre': forms.TextInput(attrs={'placeholder': 'Genre'}),
-            'publisher': forms.TextInput(attrs={'placeholder': 'Publisher'}),
+            'author': forms.Select(attrs={'placeholder': 'Author'}),
+            'image': forms.URLInput(attrs={'placeholder': 'Image URL'}),
+            'genre': forms.Select(choices=Book.GENRE_CHOICES, attrs={'placeholder': 'Genre'}),
+            'publisher': forms.Select(attrs={'placeholder': 'Publisher'}),
             'publication_date_book': forms.DateInput(attrs={'placeholder': 'Book Publication Date'}),
             'description': forms.Textarea(attrs={'placeholder': 'Description'})
         }
+
+        empty_label = 'Select a genre'
 
 
 class BookEditForm(BookCreateForm):
@@ -159,7 +178,7 @@ class ProfileDeleteForm(ProfileCreateForm):
 class BookSearchForm(forms.Form):
     search_query = forms.CharField(
         label='',
-        max_length=120,
+        max_length=Book.BOOK_TITLE_MAX_LENGTH,
         widget=forms.TextInput(attrs={'placeholder': 'Search Book'})
     )
 
@@ -167,6 +186,16 @@ class BookSearchForm(forms.Form):
 class AuthorSearchForm(forms.Form):
     search_query = forms.CharField(
         label='',
-        max_length=120,
+        max_length=Author.AUTHOR_NAME_MAX_LENGTH,
         widget=forms.TextInput(attrs={'placeholder': 'Search Author'})
     )
+
+
+class PublisherSearchForm(forms.Form):
+    search_query = forms.CharField(
+        label='',
+        max_length=Publisher.PUBLISHER_NAME_MAX_LENGTH,
+        widget=forms.TextInput(attrs={'placeholder': 'Search Publisher'})
+    )
+
+

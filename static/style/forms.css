@@ -8,7 +8,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Form input fields */
+.form-container select,
 .form-container input,
 .form-container textarea {
   width: 100%;
@@ -24,14 +24,14 @@
   text-align: center;
   color:gray;
 }
-
-/* Form input placeholder styles */
+.form-container label select:required:invalid,
+.form-container select option:first-child,
 .form-container input::placeholder,
 .form-container textarea::placeholder {
   color: #999;
 }
-
-/* Form input focus styles */
+.form-container textarea:hover,
+.form-container select:hover,
 .form-container input:hover{
   border-color: #6cb2eb;
   box-shadow: 0 0 5px rgba(108, 178, 235, 0.5);

@@ -1,1 +1,52 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/details.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="details-container">
+            <div class="image-container-details">
+                <img src="{{ publisher.image }}" alt="book-image">
+            </div>
+            <div class="text-container">
+                <div class="text-container-details">
+                    <h2 class="book-info"> Name: {{ publisher.name }}</h2>
+                    {% if publisher.website %}
+                        <h2 class="book-info"> Publisher Website: <a href={{ publisher.website }}>{{ publisher.website }}</a></h2>
+                    {% else %}
+                        <h2 class="book-info"> Publisher Website: None</h2>
+                    {% endif %}
+                    {% if publisher.email %}
+                        <h2 class="book-info"> Publisher Email: <a href={{ publisher.email }}>{{ publisher.email }}</a></h2>
+                    {% else %}
+                        <h2 class="book-info"> Publisher Email: None</h2>
+                    {% endif %}
+                    <h2 class="book-info"> Centrals: {{ publisher.country }}</h2>
+                    <h2 class="book-info">  Founded on: {{ publisher.email}}</h2>
+                    <h2 class="book-info"> CEO: {{ publisher.ceo }}</h2>
+                    <h2 class="book-info"> Closed on: {{ publisher.closed }}</h2>
+                </div>
+                <div class="book-description">
+                    <h2>Description</h2>
+                    <p>{{ publisher.description }}</p>
+                </div>
+            </div>
+            <div class="buttons-container-details" >
+                <a style="grid-column: span 2; margin-left: 90px">
+                    <button type="button">View Books</button>
+                </a>
+                {% if request.user == publisher.created_by or request.user.is_superuser %}
+                    <a href="{% url 'publisher-edit' pk=publisher.pk %}">
+                        <button type="submit">Edit</button>
+                    </a>
+                    <a href="{% url 'publisher-delete' pk=publisher.pk %}">
+                        <button type="submit">Delete</button>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

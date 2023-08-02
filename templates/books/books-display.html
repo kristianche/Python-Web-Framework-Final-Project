@@ -25,12 +25,12 @@
                     <h2>{{ book.genre }}</h2>
                     <h2>Reviews: {{ book.reviews_counter }}</h2>
                 </div>
-            <a>
-                <button type="button">Details</button>
-            </a>
-            <a>
-                 <button type="button">Write Review</button>
-            </a>
+                <a href="{% url 'book-details' pk=book.pk %}">
+                    <button type="submit">Details</button>
+                </a>
+                <a>
+                    <button type="submit">Write Review</button>
+                </a>
 
             </div>
             {% endfor %}

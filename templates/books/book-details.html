@@ -1,1 +1,48 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/details.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="details-container">
+            <div class="image-container-details">
+                <img src="{{ book.image }}" alt="book-image">
+            </div>
+            <div class="text-container">
+                <div class="text-container-details">
+                    <h2 class="book-info"> Title: {{ book.title }}</h2>
+                    <h2 class="book-info"> Author: {{ book.author }}</h2>
+                    <h2 class="book-info"> Publisher: {{ book.publisher }}</h2>
+                    <h2 class="book-info"> Genre: {{ book.genre }}</h2>
+                    <h2 class="book-info"> Publication Date: {{ book.publication_date_book }}</h2>
+                    <h2 class="book-info"> Reviews: {{ book.reviews_counter }}</h2>
+                    <h2 class="book-info"> Average grade: 8</h2>
+                </div>
+                <div class="book-description">
+                    <h2>Book Description</h2>
+                    <p>{{ book.description }}</p>
+                </div>
+            </div>
+            <div class="buttons-container-details">
+                <a>
+                    <button type="button">Write Review</button>
+                </a>
+                <a>
+                    <button type="button">View Reviews</button>
+                </a>
+                {% if request.user == book.created_by or request.user.is_superuser%}
+                    <a href="{% url 'book-edit' pk=book.pk %}">
+                        <button type="submit">Edit</button>
+                    </a>
+                    <a href="{% url 'book-delete' pk=book.pk %}">
+                        <button type="submit">Delete</button>
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </main>
+{% endblock %}
