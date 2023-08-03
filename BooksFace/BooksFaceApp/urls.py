@@ -48,5 +48,7 @@ urlpatterns = [
         path('create/', views.ProfileCreate.as_view(), name='profile-create')
     ])),
     path('login/', views.Login.as_view(), name='login'),
-    path('logout/', views.Logout.as_view(), name='logout')
+    path('logout/', views.Logout.as_view(), name='logout'),
+    path('view_books_by_author/<int:pk>', views.books_by_author, name='books-by-author'),
+    path('view_books_by_publisher/<int:pk>', views.books_by_publisher, name='books-by-publisher')
 ]

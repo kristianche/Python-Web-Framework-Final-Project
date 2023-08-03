@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="buttons-container-details" >
-                <a style="grid-column: span 2; margin-left: 90px">
+                <a href="{% url 'books-by-author' pk=author.pk %}" style="grid-column: span 2; margin-left: 90px">
                     <button type="button">View Books</button>
                 </a>
                 {% if request.user == author.created_by or request.user.is_superuser %}

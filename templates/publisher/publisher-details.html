@@ -24,7 +24,7 @@
                     {% else %}
                         <h2 class="book-info"> Publisher Email: None</h2>
                     {% endif %}
-                    <h2 class="book-info"> Centrals: {{ publisher.country }}</h2>
+                    <h2 class="book-info"> Office: {{ publisher.office }}</h2>
                     <h2 class="book-info">  Founded on: {{ publisher.email}}</h2>
                     <h2 class="book-info"> CEO: {{ publisher.ceo }}</h2>
                     <h2 class="book-info"> Closed on: {{ publisher.closed }}</h2>
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="buttons-container-details" >
-                <a style="grid-column: span 2; margin-left: 90px">
+                <a href="{% url 'books-by-publisher' pk=publisher.pk %}" style="grid-column: span 2; margin-left: 90px">
                     <button type="button">View Books</button>
                 </a>
                 {% if request.user == publisher.created_by or request.user.is_superuser %}

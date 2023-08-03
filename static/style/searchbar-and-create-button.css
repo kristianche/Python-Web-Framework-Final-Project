@@ -46,7 +46,7 @@ input {
   box-shadow: 0 0 3px #007bff;
 }
 
-#CreateBookButton{
+#CreateButton{
     padding: 30px;
     margin: 0;
     background-color: #007bff;
@@ -59,10 +59,25 @@ input {
     transition: background-color 0.3s ease;
 }
 
-#CreateBookButton:hover{
+#CreateButton:hover{
     background-color: #0056b3;
 }
 
 a{
     text-decoration: none;
+}
+
+.Titletext{
+    color: white;
+    margin: 200px 15%;
+    width: 70%;
+    background-color: #D3D3D3;
+    border: 2px black solid;
+    border-radius: 20px;
+}
+
+.Titletext h1{
+    color: black;
+    text-align: center;
+    font-size: 40px;
 }

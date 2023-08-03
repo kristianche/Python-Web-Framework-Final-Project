@@ -9,6 +9,14 @@
 {% block content %}
     <main>
         {% include 'components/searchbar-and-create-button.html' %}
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'publisher-create'%}">
+                <button id='CreateButton' type="submit">{{ button_title }}</button>
+            </a>
+        {% else %}
+            <h2 style="margin-left: 850px; color: white">You need to log in to {{ button_title }}</h2>
+        {% endif %}
+        {% if publishers %}
         <div style="grid-template-columns: repeat(4, 1fr); " class="boxes-container">
             {% for publisher in publishers %}
             <div class="box-container-author">
@@ -20,7 +28,7 @@
                     {% endif %}
                 </div>
                 <div>
-                    <a>
+                    <a href="{% url 'books-by-publisher' pk=publisher.pk %}">
                         <button class="button-author" type="button">View Books</button>
                     </a>
                     <a href="{% url 'publisher-details' pk=publisher.pk%}">
@@ -35,5 +43,8 @@
             </div>
             {% endfor %}
         </div>
+        {% else %}
+            <h1 style="margin: 195px 800px; font-size: 70px">Nothing Found</h1>
+        {% endif %}
     </main>
 {% endblock %}

@@ -54,13 +54,14 @@ class BookCreate(generic.CreateView, LoginRequiredMixin):
         return context
 
     def form_valid(self, form):
-        result = super().form_valid(form)
-        title = form['title']
-        if not book_exists(title):
-            Book.created_by = self.request.user
-            return result
-        else:
-            raise ValidationError(f'There is already created a book with name {title}.')
+        title = form.cleaned_data['title']
+        if Book.objects.filter(title=title).exists():
+            form.add_error('title', 'A book with this title already exists.')
+            return self.form_invalid(form)
+
+        form.instance.created_by = self.request.user.username
+
+        return super().form_valid(form)
 
 
 class BookEdit(generic.UpdateView, LoginRequiredMixin):
@@ -71,6 +72,14 @@ class BookEdit(generic.UpdateView, LoginRequiredMixin):
     def get_success_url(self):
 
         return reverse_lazy('book-details', args=[self.object.pk])
+
+    def form_valid(self, form):
+        title = form.cleaned_data['title']
+        if Book.objects.filter(title=title).exists():
+            form.add_error('title', 'A book with this title already exists.')
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
 
 
 class BookDelete(generic.DeleteView, LoginRequiredMixin):
@@ -120,17 +129,30 @@ class AuthorCreate(generic.CreateView, LoginRequiredMixin):
     success_url = reverse_lazy('authors-display')
 
     def form_valid(self, form):
-        result = super().form_valid(form)
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        if Author.objects.filter(first_name=first_name, last_name=last_name).exists():
+            form.add_error(None, 'An author with this name already exists.')
+            return self.form_invalid(form)
 
-        Author.created_by = self.request.user
+        form.instance.created_by = self.request.user.username
 
-        return result
+        return super().form_valid(form)
 
 
 class AuthorEdit(generic.UpdateView, LoginRequiredMixin):
     model = Author
     form_class = forms.AuthorEditForm
     template_name = 'author/author-edit.html'
+
+    def form_valid(self, form):
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        if Author.objects.filter(first_name=first_name, last_name=last_name).exists():
+            form.add_error(None, 'An author with this name already exists.')
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
 
     def get_success_url(self):
 
@@ -179,20 +201,31 @@ class PublisherCreate(generic.CreateView, LoginRequiredMixin):
     model = Publisher
     form_class = forms.PublisherCreateForm
     template_name = 'publisher/publisher-create.html'
-    success_url = reverse_lazy('publisher-create')
+    success_url = reverse_lazy('publishers-display')
 
     def form_valid(self, form):
-        result = super().form_valid(form)
+        name = form.cleaned_data['name']
+        if Publisher.objects.filter(name=name).exists():
+            form.add_error('name', 'A publisher with this name already exists.')
+            return self.form_invalid(form)
 
-        Publisher.created_by = self.request.user
+        form.instance.created_by = self.request.user.username
 
-        return result
+        return super().form_valid(form)
 
 
 class PublisherEdit(generic.UpdateView, LoginRequiredMixin):
     model = Publisher
     form_class = forms.PublisherEditForm
     template_name = 'publisher/publisher-edit.html'
+
+    def form_valid(self, form):
+        name = form.cleaned_data['name']
+        if Publisher.objects.filter(name=name).exists():
+            form.add_error('name', 'A publisher with this name already exists.')
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
 
     def get_success_url(self):
 
@@ -261,10 +294,25 @@ class ReviewCreate(generic.CreateView):
     pass
 
 
+def books_by_author(request, pk):
+    author = Author.objects.filter(pk=pk).get()
+    books = Book.objects.filter(author=author)
 
-def book_exists(title):
-    # Use the 'filter' method to check if the book with the given title exists
-    book_queryset = Book.objects.filter(title=title)
+    context = {
+        'books': books,
+        'author': author
+    }
 
-    # Check if any book with the given title exists
-    return book_queryset.exists()
+    return render(request, template_name='books/books-by-author.html', context=context)
+
+
+def books_by_publisher(request, pk):
+    publisher = Publisher.objects.filter(pk=pk).get()
+    books = Book.objects.filter(publisher=publisher)
+
+    context = {
+        'books': books,
+        'publisher': publisher
+    }
+
+    return render(request, template_name='books/books-by-publisher.html', context=context)

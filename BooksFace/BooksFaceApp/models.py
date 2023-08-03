@@ -275,11 +275,11 @@ class Publisher(models.Model):
         verbose_name='Founded on'
     )
 
-    country = models.CharField(
+    office = models.CharField(
         null=True,
         blank=True,
         unique=True,
-        verbose_name='Central Country'
+        verbose_name='Office'
     )
     ceo = models.CharField(
         null=True,

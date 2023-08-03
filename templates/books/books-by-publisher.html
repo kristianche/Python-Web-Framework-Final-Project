@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static%}
-
+{% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'style/box.css' %}">
     <link rel="stylesheet" href="{% static 'style/searchbar-and-create-button.css' %}">
@@ -9,14 +8,9 @@
 {% block content %}
 
     <main>
-        {% include 'components/searchbar-and-create-button.html' %}
-        {% if request.user.is_authenticated or request.user.is_superuser%}
-            <a href="{% url 'book-create' %}">
-                <button id='CreateButton' type="submit">{{ button_title }}</button>
-            </a>
-        {% else %}
-            <h2 style="margin-left: 850px; color: white">You need to log in to {{ button_title }}</h2>
-        {% endif %}
+        <div class="Titletext">
+            <h1>{{ publisher.name }}'s books</h1>
+        </div>
         {% if books %}
         <div class="boxes-container">
             {% for book in books %}
@@ -45,8 +39,7 @@
             {% endfor %}
         </div>
         {% else %}
-            <h1 style="margin: 195px 800px; font-size: 70px">Nothing Found</h1>
+            <h1 style="margin: 246px 800px; font-size: 70px">Nothing Found</h1>
         {% endif %}
-
     </main>
 {% endblock %}

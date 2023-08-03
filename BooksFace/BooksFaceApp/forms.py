@@ -67,15 +67,29 @@ class AuthorCreateForm(forms.ModelForm):
         model = Author
         exclude = ['created_by']
         labels = {
+            'image': '',
             'first_name': '',
             'last_name': '',
-            'biography': ''
+            'biography': '',
+            'city': '',
+            'country': '',
+            'birthday': '',
+            'dead': '',
+            'nationality': '',
+            'nickname': ''
         }
 
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
-            'biography': forms.Textarea(attrs={'placeholder': 'Biography'})
+            'biography': forms.Textarea(attrs={'placeholder': 'Biography'}),
+            'image': forms.URLInput(attrs={'placeholder': 'Image URL'}),
+            'birthday': forms.DateInput(attrs={'placeholder': 'Birthday'}),
+            'dead': forms.DateInput(attrs={'placeholder': 'Died on'}),
+            'nickname': forms.TextInput(attrs={'placeholder': 'Nickname'}),
+            'nationality': forms.TextInput(attrs={'placeholder': 'Nationality'}),
+            'city': forms.TextInput(attrs={'placeholder': 'Birth City'}),
+            'country': forms.TextInput(attrs={'placeholder': 'Birth Country'})
         }
 
 
@@ -99,19 +113,29 @@ class PublisherCreateForm(forms.ModelForm):
         model = Publisher
         exclude = ['created_by']
         labels = {
+            'image': '',
             'name': '',
             'description': '',
             'image_url': '',
             'website': '',
-            'email': ''
+            'email': '',
+            'office': '',
+            'ceo': '',
+            'closed': '',
+            'founded': ''
         }
 
         widgets = {
+            'image': forms.URLInput(attrs={'placeholder': 'Image'}),
             'name': forms.TextInput(attrs={'placeholder': 'Name'}),
             'description': forms.Textarea(attrs={'placeholder': 'Description'}),
             'image_url': forms.URLInput(attrs={'placeholder': 'Image URL'}),
             'website': forms.URLInput(attrs={'placeholder': 'Website'}),
-            'email': forms.EmailInput(attrs={'placeholder': 'Email'})
+            'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
+            'founded': forms.TextInput(attrs={'placeholder': 'Founded on'}),
+            'office': forms.TextInput(attrs={'placeholder': 'Office'}),
+            'ceo': forms.TextInput(attrs={'placeholder': 'CEO'}),
+            'closed': forms.TextInput(attrs={'placeholder': 'Closed on'})
         }
 
 

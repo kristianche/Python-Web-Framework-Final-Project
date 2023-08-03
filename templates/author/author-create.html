@@ -1,1 +1,17 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/forms.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <h2 class="form-title">Author Creation Form</h2>
+        <form action="{% url 'author-create' %}" method="post">
+            {{ form.as_p}}
+            {% csrf_token %}
+            <button class='form-button' style="margin-left: 10%;" type="submit">Create</button>
+        </form>
+    </div>
+{% endblock %}
