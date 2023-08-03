@@ -23,9 +23,9 @@ class Profile(auth_model.AbstractUser):
         ('Female', 'Female'),
         ('Other', 'Other')
     )
-    groups = models.ManyToManyField(auth_model.Group, related_name='user_profiles')
+    groups = models.ManyToManyField(auth_model.Group, related_name='user_profiles', null=True, blank=True)
 
-    user_permissions = models.ManyToManyField(auth_model.Permission, related_name='user_profiles')
+    user_permissions = models.ManyToManyField(auth_model.Permission, related_name='user_profiles', null=True, blank=True)
 
     first_name = models.CharField(
         verbose_name='First Name',

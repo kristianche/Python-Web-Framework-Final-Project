@@ -6,25 +6,29 @@ import re
 
 def check_password_capital_letter(value):
     pattern = r'[A-Z]+'
-    if re.search(value, pattern):
+    valid_password = re.findall(pattern, value)
+    if not valid_password:
         raise ValidationError('Password must contain at least one capital letter!')
 
 
 def check_password_number(value):
     pattern = r'\d+'
-    if re.search(value, pattern):
+    valid_password = re.findall(pattern, value)
+    if not valid_password:
         raise ValidationError('Password must contain at least one number!')
 
 
 def check_password_lowercase_letter(value):
-    pattern = r'[a-z]'
-    if re.search(value, pattern):
+    pattern = r'[a-z]+'
+    valid_password = re.findall(pattern, value)
+    if not valid_password:
         raise ValidationError('Password must contain at least one lowercase letter!')
 
 
 def check_password_special_symbol(value):
-    pattern = r".*[^a-zA-Z0-9].*+"
-    if re.search(value, pattern):
+    pattern = r'[.!@#$%^&*()_+{}|:"<>?`~-]'
+    valid_password = re.findall(pattern, value)
+    if not valid_password:
         raise ValidationError('Password must contain at least one special symbol!')
 
 
