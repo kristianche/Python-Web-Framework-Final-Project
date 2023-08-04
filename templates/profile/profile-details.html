@@ -30,8 +30,11 @@
                     {% endif %}
                 </div>
                 <div class="book-description">
+
                     <h2>About Me</h2>
+                    {% if profile.about_me %}
                     <p>{{ profile.about_me}}</p>
+                    {% endif %}
                 </div>
             </div>
             <div class="buttons-container-details">

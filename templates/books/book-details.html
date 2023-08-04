@@ -33,11 +33,9 @@
                 </div>
             </div>
             <div class="buttons-container-details">
-                {% if request.user.is_authenticated or request.user.is_superuser %}
                     <a href="{% url 'review-creation' pk=book.pk %}">
                         <button type="button">Write Review</button>
                     </a>
-                {% endif %}
                 <a href="{% url 'book-reviews-display' pk=book.pk %}">
                     <button type="button">View Reviews</button>
                 </a>

@@ -44,16 +44,18 @@ class BookDetails(generic.DetailView):
     context_object_name = 'book'
     template_name = 'books/book-details.html'
 
-    def get_context_data(self, pk, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
         book = Book.objects.get(pk=pk)
-        reviews = ReviewBook.objects.get(book=book)
+        reviews = ReviewBook.objects.filter(book=book)
         average_grade = 0
-        counter = 0
-        for review in reviews:
-            counter += 1
-            average_grade += review.grade
-        average_grade = average_grade/counter
+        if reviews:
+            counter = 0
+            for review in reviews:
+                counter += 1
+                average_grade += review.grade
+            average_grade = round(average_grade / counter, 1)
         context['average_grade'] = average_grade
         return context
 
@@ -264,16 +266,17 @@ class ProfileCreate(generic.CreateView):
         return result
 
 
-class ProfileEdit(generic.UpdateView):
+class ProfileEdit(generic.UpdateView, LoginRequiredMixin):
     model = Profile
     form_class = forms.ProfileEditForm
     template_name = 'profile/profile-edit.html'
 
     def get_success_url(self):
 
-        return reverse_lazy('profile-edit', args=[self.object.pk])
+        return reverse_lazy('profile-details', args=[self.object.user.pk])
 
 
+@login_required()
 def profile_delete(request, pk):
     user = get_object_or_404(User, pk=pk)
     profile = Profile.objects.get(user=user)
@@ -301,10 +304,6 @@ class Login(auth_views.LoginView):
     redirect_authenticated_user = True
 
 
-class ReviewCreate(generic.CreateView):
-    pass
-
-
 def books_by_author(request, pk):
     author = Author.objects.filter(pk=pk).get()
     books = Book.objects.filter(author=author)
@@ -329,6 +328,7 @@ def books_by_publisher(request, pk):
     return render(request, template_name='books/books-by-publisher.html', context=context)
 
 
+@login_required()
 def review_creation(request, pk):
     book = Book.objects.get(pk=pk)
 
@@ -366,6 +366,7 @@ def view_book_reviews(request, pk):
     return render(request, template_name='reviews/reviews-book-display.html', context=context)
 
 
+@login_required()
 def review_edit(request, pk):
     review = get_object_or_404(ReviewBook, pk=pk)
 
@@ -385,6 +386,7 @@ def review_edit(request, pk):
     return render(request, template_name='reviews/review-edit.html', context=context)
 
 
+@login_required()
 def review_delete(request, pk):
     review = get_object_or_404(ReviewBook, pk=pk)
     book = Book.objects.get(title=review.book.title)

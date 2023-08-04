@@ -15,19 +15,35 @@
                 <div class="text-container-details">
                     <h2 class="book-info"> Name: {{ publisher.name }}</h2>
                     {% if publisher.website %}
-                        <h2 class="book-info"> Publisher Website: <a href={{ publisher.website }}>{{ publisher.website }}</a></h2>
+                        <h2 class="book-info"> Website: <a href={{ publisher.website }}>{{ publisher.website }}</a></h2>
                     {% else %}
-                        <h2 class="book-info"> Publisher Website: None</h2>
+                        <h2 class="book-info"> Website: Unknown</h2>
                     {% endif %}
                     {% if publisher.email %}
-                        <h2 class="book-info"> Publisher Email: <a href={{ publisher.email }}>{{ publisher.email }}</a></h2>
+                        <h2 class="book-info">  Email: <a href={{ publisher.email }}>{{ publisher.email }}</a></h2>
                     {% else %}
-                        <h2 class="book-info"> Publisher Email: None</h2>
+                        <h2 class="book-info">  Email: Unknown</h2>
                     {% endif %}
-                    <h2 class="book-info"> Office: {{ publisher.office }}</h2>
+                    {% if publisher.office %}
+                        <h2 class="book-info"> Office: {{ publisher.office }}</h2>
+                    {% else %}
+                    <h2 class="book-info"> Office: Unknown</h2>
+                    {% endif %}
+                    {% if publisher.founded %}
                     <h2 class="book-info">  Founded on: {{ publisher.email}}</h2>
+                    {% else %}
+                    <h2 class="book-info">  Founded on: Unknown</h2>
+                    {% endif %}
+                    {% if publisher.ceo %}
                     <h2 class="book-info"> CEO: {{ publisher.ceo }}</h2>
+                    {% else %}
+                    <h2 class="book-info"> CEO: Unknown</h2>
+                    {% endif %}
+                    {% if publisher.closed %}
                     <h2 class="book-info"> Closed on: {{ publisher.closed }}</h2>
+                    {% else %}
+                    <h2 class="book-info"> Closed on: Not closed yet</h2>
+                    {% endif %}
                 </div>
                 <div class="book-description">
                     <h2>Description</h2>

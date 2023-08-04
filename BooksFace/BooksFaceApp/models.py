@@ -41,10 +41,10 @@ class Profile(models.Model):
     )
 
     sex = models.CharField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         choices=SEX_CHOICES,
-        default=None
+        default='Sex'
     )
 
     city = models.CharField(
