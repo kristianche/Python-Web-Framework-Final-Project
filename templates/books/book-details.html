@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'style/details.css' %}">
@@ -39,7 +40,7 @@
                 <a href="{% url 'book-reviews-display' pk=book.pk %}">
                     <button type="button">View Reviews</button>
                 </a>
-                {% if request.user == book.created_by or request.user.is_superuser%}
+                {% if request.user == book.created_by or request.user.is_superuser or request.user|in_group:"Books Management" or request.user|in_group:"Global Management"%}
                     <a href="{% url 'book-edit' pk=book.pk %}">
                         <button type="submit">Edit</button>
                     </a>

@@ -1,28 +1,18 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
+from django.forms import ModelChoiceField
 from .models import Book, Author, Publisher, Profile, ReviewBook
-from django.contrib.auth.forms import UserCreationForm, BaseUserCreationForm
-
-
-class PlaceholderSelect(forms.Select):
-    def __init__(self, attrs=None, choices=(), empty_label=None):
-        super().__init__(attrs, choices)
-        self.empty_label = empty_label
-
-    def create_option(self, *args, **kwargs):
-        option = super().create_option(*args, **kwargs)
-        if 'index' in option and option['index'] == 0 and self.empty_label:
-            option['label'] = self.empty_label
-        return option
+from django.contrib.auth.forms import UserCreationForm
 
 
 class BookCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['genre'].widget.attrs['placeholder'] = 'Genre'
+        self.fields['author'].empty_label = 'Author'
+        self.fields['genre'].empty_label = 'Genre'
+        self.fields['publisher'].empty_label = 'Publisher'
 
     class Meta:
         model = Book
@@ -46,8 +36,6 @@ class BookCreateForm(forms.ModelForm):
             'publication_date_book': forms.DateInput(attrs={'placeholder': 'Book Publication Date'}),
             'description': forms.Textarea(attrs={'placeholder': 'Description'})
         }
-
-        empty_label = 'Select a genre'
 
 
 class BookEditForm(BookCreateForm):
@@ -236,30 +224,6 @@ class ProfileDeleteForm(ProfileCreateForm):
             field.required = False
 
 
-class BookSearchForm(forms.Form):
-    search_query = forms.CharField(
-        label='',
-        max_length=Book.BOOK_TITLE_MAX_LENGTH,
-        widget=forms.TextInput(attrs={'placeholder': 'Search Book'})
-    )
-
-
-class AuthorSearchForm(forms.Form):
-    search_query = forms.CharField(
-        label='',
-        max_length=Author.AUTHOR_NAME_MAX_LENGTH,
-        widget=forms.TextInput(attrs={'placeholder': 'Search Author'})
-    )
-
-
-class PublisherSearchForm(forms.Form):
-    search_query = forms.CharField(
-        label='',
-        max_length=Publisher.PUBLISHER_NAME_MAX_LENGTH,
-        widget=forms.TextInput(attrs={'placeholder': 'Search Publisher'})
-    )
-
-
 class ReviewCreationForm(forms.ModelForm):
     class Meta:
         model = ReviewBook
@@ -291,6 +255,33 @@ class ReviewDeleteForm(ReviewCreationForm):
         for field in self.fields.values():
             field.widget.attrs['disabled'] = 'disabled'
             field.required = False
+
+
+class BookSearchForm(forms.Form):
+    search_query = forms.CharField(
+        label='',
+        max_length=Book.BOOK_TITLE_MAX_LENGTH,
+        widget=forms.TextInput(attrs={'placeholder': 'Search Book'})
+    )
+
+
+class AuthorSearchForm(forms.Form):
+    search_query = forms.CharField(
+        label='',
+        max_length=Author.AUTHOR_NAME_MAX_LENGTH,
+        widget=forms.TextInput(attrs={'placeholder': 'Search Author'})
+    )
+
+
+class PublisherSearchForm(forms.Form):
+    search_query = forms.CharField(
+        label='',
+        max_length=Publisher.PUBLISHER_NAME_MAX_LENGTH,
+        widget=forms.TextInput(attrs={'placeholder': 'Search Publisher'})
+    )
+
+
+
 
 
 

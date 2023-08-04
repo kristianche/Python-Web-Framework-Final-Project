@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% load static %}
+{% load custom_tags %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'style/box.css' %}">
@@ -9,7 +10,7 @@
 {% block content %}
     <main>
         {% include 'components/searchbar-and-create-button.html' %}
-        {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated  or request.user.is_superuser %}
             <a href="{% url 'author-create'%}">
                 <button id='CreateButton' type="submit">{{ button_title }}</button>
             </a>

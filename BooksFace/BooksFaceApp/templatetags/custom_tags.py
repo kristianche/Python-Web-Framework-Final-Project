@@ -1,12 +1,14 @@
 from django import template
 from BooksFace.BooksFaceApp.models import Profile
-
+from django.contrib.auth.models import Group
 
 register = template.Library()
 
 
-@register.simple_tag
-def check_login(user):
-    if isinstance(user, Profile):
-        return user.is_authenticated
-    return False
+@register.filter
+def in_group(user, group_name):
+    try:
+        group = Group.objects.get(name=group_name)
+        return group in user.groups.all()
+    except Group.DoesNotExist:
+        return False

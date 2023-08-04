@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MaxLengthValidator, MinLengthValidator, MinValueValidator, MaxValueValidator
 from django.contrib.auth import models as auth_model
-from .validators import check_password_number, check_password_capital_letter, check_password_lowercase_letter, check_password_special_symbol, CheckStartsWithCapitalLetter
+from .validators import CheckStartsWithCapitalLetter
 
 
 class Profile(models.Model):
@@ -43,8 +43,7 @@ class Profile(models.Model):
     sex = models.CharField(
         null=False,
         blank=False,
-        choices=SEX_CHOICES,
-        default='Sex'
+        choices=SEX_CHOICES
     )
 
     city = models.CharField(
@@ -127,6 +126,7 @@ class Author(models.Model):
         blank=True,
         default=None,
         verbose_name='City'
+
     )
 
     country = models.CharField(
@@ -310,6 +310,8 @@ class Book(models.Model):
         ('Self-Help', 'Self-Help'),
         ('Travel', 'Travel'),
         ('True Crime', 'True Crime'),
+        ('Drama', 'Drama'),
+        ('Comedy', 'Comedy')
     )
 
     title = models.CharField(
@@ -375,12 +377,6 @@ class Book(models.Model):
         default=0,
         verbose_name='Reviews'
     )
-    likes = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-        default=0,
-        verbose_name='Likes'
-    )
 
     created_by = models.CharField(
         null=False,
@@ -390,7 +386,6 @@ class Book(models.Model):
 
     def reviews_counter_increase(self):
         self.reviews_counter += 1
-
 
     def __str__(self):
         return self.title

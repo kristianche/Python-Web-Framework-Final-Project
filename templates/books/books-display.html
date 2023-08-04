@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% load static%}
+{% load static %}
+{% load custom_tags %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'style/box.css' %}">
@@ -10,7 +11,7 @@
 
     <main>
         {% include 'components/searchbar-and-create-button.html' %}
-        {% if request.user.is_authenticated or request.user.is_superuser %}
+        {% if request.user.is_authenticated or request.user.is_superuser or request.user|in_group:"Books Management" or request.user|in_group:"Global Management"%}
             <a href="{% url 'book-create' %}">
                 <button id='CreateButton' type="submit">{{ button_title }}</button>
             </a>
