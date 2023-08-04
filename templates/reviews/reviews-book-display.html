@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/reviews.css' %}">
+    <link rel="stylesheet" href="{% static 'style/searchbar-and-create-button.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="Titletext" style="margin-bottom: 20px;">
+            <h1>{{ book.title }}'s reviews</h1>
+        </div>
+        <a href="{% url 'review-creation' pk=book.pk %}">
+            <button id="CreateButton" style='margin-left: 43%; margin-bottom: 50px' type="submit">Create Review</button>
+        </a>
+        <div class = 'reviews-container'>
+            {% for review in reviews %}
+            <div class="review-container">
+                <div class="review">
+                    <p>{{ review.review }}</p>
+                </div>
+                <div class="review-footer">
+                    <div class="review-buttons">
+                        {% if request.user == review.author or request.user.is_superuser %}
+                        <a href="{% url 'book-reviews-edit' pk=review.pk %}">
+                            <button>Edit</button>
+                        </a>
+                        <a href="{% url 'book-reviews-delete' pk=review.pk %}">
+                            <button>Delete</button>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <span>Grade: {{ review.grade }}/10 Date and Time: {{ review.review_date }} Author: {{ review.author }}</span>
+                </div>
+
+
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}

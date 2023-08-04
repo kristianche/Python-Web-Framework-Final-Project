@@ -6,10 +6,45 @@
 {% endblock %}
 
 {% block content %}
-    <div class="profile-details-container">
-        <div>
+    <main>
+        <div class="details-container">
+            <div class="image-container-details">
+                {% if profile.image %}
+                    <img src="{{ profile.image }}" alt="profile-image">
+                {% else %}
+                    <img src="{% static 'images/Default-Profile-Picture.png' %}" alt="profile-image">
+                {% endif %}
+            </div>
+            <div class="text-container">
+                <div class="text-container-details">
+                    <h2 class="book-info"> First Name: {{ profile.user.first_name }}</h2>
+                    <h2 class="book-info"> Last Name: {{ profile.user.last_name }}</h2>
+                    <h2 class="book-info"> Email: {{ profile.user.email }}</h2>
+                    <h2 class="book-info"> Username: {{ profile.user.username }}</h2>
+                    <h2 class="book-info"> Sex: {{ profile.sex}}</h2>
+                    <h2 class="book-info"> Location: {{ profile.city }}, {{ profile.country }}</h2>
+                    {% if profile.birthday %}
+                        <h2 class="book-info"> Age: {{ profile.age }}</h2>
+                    {% else %}
+                        <h2 class="book-info"> Age: Unknown</h2>
+                    {% endif %}
+                </div>
+                <div class="book-description">
+                    <h2>About Me</h2>
+                    <p>{{ profile.about_me}}</p>
+                </div>
+            </div>
+            <div class="buttons-container-details">
+                {% if request.user == profile.user or request.user.is_superuser%}
+                    <a href="{% url 'profile-edit' pk=profile.pk %}">
+                        <button type="submit">Edit</button>
+                    </a>
+                    <a href="{% url 'profile-delete' pk=request.user.pk %}">
+                        <button type="submit">Delete</button>
+                    </a>
+                {% endif %}
+            </div>
 
         </div>
-
-    </div>
+    </main>
 {% endblock %}

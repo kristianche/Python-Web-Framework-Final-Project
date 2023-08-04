@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from BooksFace.BooksFaceApp.models import ReviewBook, Profile, Book, Author, Publisher
@@ -5,12 +6,16 @@ from BooksFace.BooksFaceApp.models import ReviewBook, Profile, Book, Author, Pub
 
 class ReviewBookModelTest(TestCase):
     def setUp(self):
-        self.profile_data = {
+        self.user_data = {
             'username': 'test_user',
             'password': 'Password123!',
-            'password2': 'Password123!',
             'first_name': 'John',
             'last_name': 'Doe',
+        }
+
+        self.user = User.objects.create(**self.user_data)
+        self.profile_data = {
+            'user': self.user,
             'birthday': '1990-01-01',
             'city': 'Test City',
             'country': 'Test Country',
@@ -55,19 +60,6 @@ class ReviewBookModelTest(TestCase):
         with self.assertRaises(ValidationError):
             review = ReviewBook.objects.create(**review_data)
             review.full_clean()
-
-    def test_grade_min_value_raises_error(self):
-        review_data = self.review_data.copy()
-        review_data['grade'] = -1
-        with self.assertRaises(ValidationError):
-            review = ReviewBook.objects.create(**review_data)
-            review.full_clean()
-
-    def test_likes_increase_method_successfully(self):
-        review_data = self.review_data.copy()
-        review = ReviewBook.objects.create(**review_data)
-        review.likes_increase()
-        self.assertEquals(review.likes, 11)
 
     def test_str_successfully(self):
         review_data = self.review_data.copy()

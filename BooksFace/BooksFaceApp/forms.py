@@ -1,5 +1,8 @@
 from django import forms
-from .models import Book, Author, Publisher, Profile
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
+from .models import Book, Author, Publisher, Profile, ReviewBook
 from django.contrib.auth.forms import UserCreationForm, BaseUserCreationForm
 
 
@@ -154,16 +157,16 @@ class PublisherDeleteForm(PublisherCreateForm, forms.ModelForm):
             field.required = False
 
 
-class ProfileCreateForm(forms.ModelForm):
+class ProfileCreateForm(UserCreationForm):
     class Meta:
-        model = Profile
-        fields = ('username', 'email', 'first_name', 'last_name', 'password', 'password2')
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
         labels = {
             'username': '',
             'email': '',
             'first_name': '',
             'last_name': '',
-            'password': '',
+            'password1': '',
             'password2': ''
         }
 
@@ -172,20 +175,54 @@ class ProfileCreateForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
             'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
-            'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
+            'password1': forms.PasswordInput(attrs={'placeholder': 'Password'}),
             'password2': forms.PasswordInput(attrs={'placeholder': 'Password Confirmation'})
         }
 
         help_texts = {
             'username': '',
-            'password': '',
+            'password1': '',
+            'password2': ''
         }
 
+    def save(self, commit=True):
+        user = super().save(commit=commit)
+        profile = Profile(
+            user=user,
+        )
+        if commit:
+            profile.save()
+        return user
 
-class ProfileEditForm(ProfileCreateForm):
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.filter(email=email).exists():
+            raise ValidationError('This email is already taken.')
+        return email
+
+
+class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = '__all__'
+        exclude = ('user', )
+
+        labels = {
+            'profile_image': '',
+            'city': '',
+            'country': '',
+            'about_me': '',
+            'sex': '',
+            'birthday': ''
+        }
+
+        widgets = {
+            'profile_image': forms.URLInput(attrs={'placeholder': 'Image Url'}),
+            'country': forms.TextInput(attrs={'placeholder': 'Country'}),
+            'city': forms.TextInput(attrs={'placeholder': 'City/Town/Village'}),
+            'birthday': forms.DateInput(attrs={'placeholder': 'Birthday'}),
+            'about_me': forms.Textarea(attrs={'placeholder': 'About Me'}),
+            'sex': forms.Select(attrs={'placeholder': 'Sex'})
+        }
 
 
 class ProfileDeleteForm(ProfileCreateForm):
@@ -221,5 +258,42 @@ class PublisherSearchForm(forms.Form):
         max_length=Publisher.PUBLISHER_NAME_MAX_LENGTH,
         widget=forms.TextInput(attrs={'placeholder': 'Search Publisher'})
     )
+
+
+class ReviewCreationForm(forms.ModelForm):
+    class Meta:
+        model = ReviewBook
+        exclude = ['likes', 'author', 'book']
+
+        labels = {
+            'review': '',
+            'book': '',
+            'grade': '',
+        }
+
+        widgets = {
+            'review': forms.Textarea(attrs={'cols': 30, 'rows': 20, 'placeholder': 'Review'}),
+            'grade': forms.NumberInput(attrs={'placeholder': 'Book Grade out of 10'}),
+            'book': forms.Select(attrs={'disabled': 'disabled'})
+        }
+
+
+class ReviewEditForm(ReviewCreationForm):
+    pass
+
+
+class ReviewDeleteForm(ReviewCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__set_disabled_fields()
+
+    def __set_disabled_fields(self):
+        for field in self.fields.values():
+            field.widget.attrs['disabled'] = 'disabled'
+            field.required = False
+
+
+
+
 
 

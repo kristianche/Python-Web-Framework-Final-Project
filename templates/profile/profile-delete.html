@@ -1,1 +1,17 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'style/forms.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div  style='margin-bottom: 315px; color:gray;' class="form-container">
+        <h2 class="form-title">Profile DeleteForm</h2>
+        <form action="{% url 'profile-delete' pk=request.user.pk %}" method="post">
+            <h1 style="text-align: center; font-size: 40px">Are you sure you want to delete this profile</h1>
+            {% csrf_token %}
+            <button class='form-button' style="margin-left: 10%;" type="submit">YES</button>
+        </form>
+    </div>
+{% endblock %}

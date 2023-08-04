@@ -1,5 +1,5 @@
 from datetime import date
-
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MaxLengthValidator, MinLengthValidator, MinValueValidator, MaxValueValidator
@@ -7,7 +7,7 @@ from django.contrib.auth import models as auth_model
 from .validators import check_password_number, check_password_capital_letter, check_password_lowercase_letter, check_password_special_symbol, CheckStartsWithCapitalLetter
 
 
-class Profile(auth_model.AbstractUser):
+class Profile(models.Model):
 
     NAMES_MAX_LENGTH = 150
     NAMES_MIN_LENGTH = 2
@@ -23,53 +23,16 @@ class Profile(auth_model.AbstractUser):
         ('Female', 'Female'),
         ('Other', 'Other')
     )
-    groups = models.ManyToManyField(auth_model.Group, related_name='user_profiles', null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    user_permissions = models.ManyToManyField(auth_model.Permission, related_name='user_profiles', null=True, blank=True)
+    USERNAME_FIELD = 'user.username'
 
-    first_name = models.CharField(
-        verbose_name='First Name',
-        blank=False,
-        null=False,
-        validators=[
-            MaxLengthValidator(NAMES_MAX_LENGTH),
-            MinLengthValidator(NAMES_MIN_LENGTH),
-            CheckStartsWithCapitalLetter(text=FIRST_NAME_CHECK_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE)
-        ]
-    )
-    last_name = models.CharField(
-        verbose_name='Last Name',
-        blank=False,
-        null=False,
-        validators=[
-            MaxLengthValidator(NAMES_MAX_LENGTH),
-            MinLengthValidator(NAMES_MIN_LENGTH),
-            CheckStartsWithCapitalLetter(text=LAST_NAME_CHECK_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE)
-        ]
-    )
-    password = models.CharField(
-        null=False,
-        blank=False,
-        verbose_name='Password',
-        validators=[
-            MinLengthValidator(PASSWORD_MIN_LENGTH),
-            check_password_capital_letter,
-            check_password_lowercase_letter,
-            check_password_special_symbol,
-            check_password_number
-        ]
-    )
     profile_image = models.URLField(
         null=True,
         blank=True,
         unique=True
     )
-    password2 = models.CharField(
-        null=False,
-        blank=False,
-        verbose_name='Password Confirmation',
-        default='password'
-    )
+
     birthday = models.DateField(
         null=True,
         blank=True,
@@ -105,17 +68,20 @@ class Profile(auth_model.AbstractUser):
             CheckStartsWithCapitalLetter(text=COUNTRY_LOCATION_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE)]
     )
 
+    about_me = models.CharField(
+        null=True,
+        blank=True,
+        verbose_name='About Me',
+        default=None,
+    )
+
     def age(self):
         today = date.today()
         age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
         return age
 
     def __str__(self):
-        return self.username
-
-    def clean(self):
-        if self.password != self.password2:
-            raise ValidationError("Passwords do not match.")
+        return str(self.user)
 
 
 class Author(models.Model):
@@ -387,7 +353,6 @@ class Book(models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=None,
         verbose_name='Publisher',
 
     )
@@ -426,6 +391,7 @@ class Book(models.Model):
     def reviews_counter_increase(self):
         self.reviews_counter += 1
 
+
     def __str__(self):
         return self.title
 
@@ -435,9 +401,25 @@ class Book(models.Model):
 
 class ReviewBook(models.Model):
 
+
     GRADE_MIN_VALUE = 0
     GRADE_MAX_VALUE = 10
-    REVIEW_MAX_LENGTH = 1000
+    REVIEW_MAX_LENGTH = 3000
+
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name='Book',
+        related_name='review'
+    )
+
+    author = models.CharField(
+        null=False,
+        blank=False,
+        verbose_name='Review Author'
+    )
 
     review = models.TextField(
         null=False,
@@ -447,20 +429,11 @@ class ReviewBook(models.Model):
 
     )
 
-    grade = models.FloatField(
+    grade = models.PositiveSmallIntegerField(
         null=True,
         blank=True,
-        validators=[MinValueValidator(GRADE_MIN_VALUE), MaxValueValidator(GRADE_MAX_VALUE)],
+        validators=[MaxValueValidator(GRADE_MAX_VALUE)],
         verbose_name='Book Grade',
-        default=0
-    )
-
-    author = models.ForeignKey(
-        Profile,
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        verbose_name='Review Author'
     )
 
     review_date = models.DateTimeField(
@@ -471,15 +444,6 @@ class ReviewBook(models.Model):
 
     )
 
-    book = models.ForeignKey(
-        Book,
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        verbose_name='Book',
-        related_name='review'
-    )
-
     likes = models.PositiveIntegerField(
         null=True,
         blank=True,
@@ -487,9 +451,12 @@ class ReviewBook(models.Model):
         default=0
     )
 
+    class Meta:
+        ordering = ['review_date']
+
     def likes_increase(self):
         self.likes += 1
 
     def __str__(self):
-        return f'{self.author.username}-{self.book.title}-{self.grade}'
+        return f'{self.author}-{self.book.title}-{self.grade}'
 

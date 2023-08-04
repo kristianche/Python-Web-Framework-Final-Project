@@ -6,12 +6,11 @@
 {% endblock %}
 
 {% block content %}
-    <div class="form-container">
+    <div  style="margin-bottom: 290px;" class="form-container">
         <h2 class="form-title">Sign In Form</h2>
         <form action="{% url 'login' %}" method="post">
             {{ form.as_p }}
             {% csrf_token %}
-            <h6 class="form-help-text"><a href="#">Forgot password</a></h6>
             <h6 class="form-help-text"><a href="{% url 'profile-create' %}">Don't have an account! Register</a></h6>
             <button class='form-button' style="margin-left: 10%;" type="submit">Sign In</button>
         </form>

@@ -1,13 +1,18 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import BookSearchForm, AuthorSearchForm, PublisherSearchForm
-from .models import Book, Author, Publisher, Profile
+from .forms import BookSearchForm, AuthorSearchForm, PublisherSearchForm, ReviewCreationForm, ReviewEditForm, \
+    ReviewDeleteForm
+from .models import Book, Author, Publisher, Profile, ReviewBook
 from . import forms
 from django.contrib.auth import views as auth_views
 
@@ -38,6 +43,19 @@ class BookDetails(generic.DetailView):
     model = Book
     context_object_name = 'book'
     template_name = 'books/book-details.html'
+
+    def get_context_data(self, pk, **kwargs):
+        context = super().get_context_data(**kwargs)
+        book = Book.objects.get(pk=pk)
+        reviews = ReviewBook.objects.get(book=book)
+        average_grade = 0
+        counter = 0
+        for review in reviews:
+            counter += 1
+            average_grade += review.grade
+        average_grade = average_grade/counter
+        context['average_grade'] = average_grade
+        return context
 
 
 class BookCreate(generic.CreateView, LoginRequiredMixin):
@@ -72,14 +90,6 @@ class BookEdit(generic.UpdateView, LoginRequiredMixin):
     def get_success_url(self):
 
         return reverse_lazy('book-details', args=[self.object.pk])
-
-    def form_valid(self, form):
-        title = form.cleaned_data['title']
-        if Book.objects.filter(title=title).exists():
-            form.add_error('title', 'A book with this title already exists.')
-            return self.form_invalid(form)
-
-        return super().form_valid(form)
 
 
 class BookDelete(generic.DeleteView, LoginRequiredMixin):
@@ -144,15 +154,6 @@ class AuthorEdit(generic.UpdateView, LoginRequiredMixin):
     model = Author
     form_class = forms.AuthorEditForm
     template_name = 'author/author-edit.html'
-
-    def form_valid(self, form):
-        first_name = form.cleaned_data['first_name']
-        last_name = form.cleaned_data['last_name']
-        if Author.objects.filter(first_name=first_name, last_name=last_name).exists():
-            form.add_error(None, 'An author with this name already exists.')
-            return self.form_invalid(form)
-
-        return super().form_valid(form)
 
     def get_success_url(self):
 
@@ -219,14 +220,6 @@ class PublisherEdit(generic.UpdateView, LoginRequiredMixin):
     form_class = forms.PublisherEditForm
     template_name = 'publisher/publisher-edit.html'
 
-    def form_valid(self, form):
-        name = form.cleaned_data['name']
-        if Publisher.objects.filter(name=name).exists():
-            form.add_error('name', 'A publisher with this name already exists.')
-            return self.form_invalid(form)
-
-        return super().form_valid(form)
-
     def get_success_url(self):
 
         return reverse_lazy('publisher-details', args=[self.object.pk])
@@ -246,10 +239,15 @@ class PublisherDelete(generic.DeleteView, LoginRequiredMixin):
         return form_kwargs
 
 
-class ProfileDetails(generic.DetailView):
-    model = Profile
-    context_object_name = 'profile'
-    template_name = 'profile/profile-details.html'
+def profile_details(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    profile = Profile.objects.get(user=user)
+
+    context = {
+        'profile': profile
+    }
+
+    return render(request, template_name='profile/profile-details.html', context=context)
 
 
 class ProfileCreate(generic.CreateView):
@@ -270,14 +268,27 @@ class ProfileEdit(generic.UpdateView):
     model = Profile
     form_class = forms.ProfileEditForm
     template_name = 'profile/profile-edit.html'
-    success_url = reverse_lazy('profile-details')
+
+    def get_success_url(self):
+
+        return reverse_lazy('profile-edit', args=[self.object.pk])
 
 
-class ProfileDelete(generic.DeleteView):
-    model = Profile
-    form_class = forms.ProfileDeleteForm
-    template_name = 'profile/profile-delete.html'
-    success_url = reverse_lazy('home-page')
+def profile_delete(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    profile = Profile.objects.get(user=user)
+
+    if request.method == 'POST':
+        logout(request)
+        profile.delete()
+        user.delete()
+        return redirect('home-page')
+
+    context = {
+        'user': user,
+    }
+
+    return render(request, template_name='profile/profile-delete.html', context=context)
 
 
 class Logout(auth_views.LogoutView, LoginRequiredMixin):
@@ -316,3 +327,81 @@ def books_by_publisher(request, pk):
     }
 
     return render(request, template_name='books/books-by-publisher.html', context=context)
+
+
+def review_creation(request, pk):
+    book = Book.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = ReviewCreationForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.author = request.user.username
+            review.book = book
+            book.reviews_counter_increase()
+            book.save()
+            review.save()
+            return redirect('books-display')
+
+    else:
+        form = ReviewCreationForm()
+
+    context = {
+        'form': form,
+        'book': book
+    }
+
+    return render(request, template_name='reviews/review-create.html', context=context)
+
+
+def view_book_reviews(request, pk):
+    book = Book.objects.get(pk=pk)
+    reviews = ReviewBook.objects.filter(book=book).order_by('-review_date')
+
+    context = {
+        'reviews': reviews,
+        'book': book
+    }
+
+    return render(request, template_name='reviews/reviews-book-display.html', context=context)
+
+
+def review_edit(request, pk):
+    review = get_object_or_404(ReviewBook, pk=pk)
+
+    if request.method == 'POST':
+        form = ReviewEditForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('books-display')
+    else:
+        form = ReviewEditForm(instance=review)
+
+    context = {
+        'form': form,
+        'review': review
+    }
+
+    return render(request, template_name='reviews/review-edit.html', context=context)
+
+
+def review_delete(request, pk):
+    review = get_object_or_404(ReviewBook, pk=pk)
+    book = Book.objects.get(title=review.book.title)
+
+    if request.method == 'POST':
+        form = ReviewDeleteForm(request.POST, instance=review)
+        if form.is_valid():
+            book.reviews_counter -= 1
+            book.save()
+            review.delete()
+            return redirect('books-display')
+    else:
+        form = ReviewDeleteForm(instance=review)
+
+    context = {
+        'form': form,
+        'review': review
+    }
+
+    return render(request, template_name='reviews/review-delete.html', context=context)

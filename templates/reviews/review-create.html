@@ -7,11 +7,11 @@
 
 {% block content %}
     <div class="form-container">
-        <h2 class="form-title">Profile Edit Form</h2>
-        <form action="{% url 'author-edit' pk=profile.pk %}" method="post">
+        <h2 class="form-title">Review Creation Form - {{ book.title }}</h2>
+        <form action="{% url 'review-creation' pk=book.pk %}" method="post">
             {{ form.as_p}}
             {% csrf_token %}
-            <button class='form-button' style="margin-left: 10%;" type="submit">Edit</button>
+            <button class='form-button' style="margin-left: 10%;" type="submit">Create</button>
         </form>
     </div>
 {% endblock %}

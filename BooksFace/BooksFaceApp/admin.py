@@ -31,11 +31,11 @@ class PublisherAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['username', 'first_name', 'last_name']
-    list_filter = ['username', 'first_name', 'last_name']
+    list_display = ['user', 'city', 'country', 'sex']
+    list_filter = ['user', 'city', 'country', 'sex']
     list_per_page = 30
-    ordering = ('first_name', 'last_name')
-    search_fields = ('username', 'first_name', 'last_name', 'email')
+    ordering = ('user', )
+    search_fields = ('sex', 'city', 'country')
 
 
 @admin.register(ReviewBook)

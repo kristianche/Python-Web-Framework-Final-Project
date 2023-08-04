@@ -17,20 +17,28 @@
                     <h2 class="book-info"> Author: {{ book.author }}</h2>
                     <h2 class="book-info"> Publisher: {{ book.publisher }}</h2>
                     <h2 class="book-info"> Genre: {{ book.genre }}</h2>
+                    {% if book.publication_date_book %}
                     <h2 class="book-info"> Publication Date: {{ book.publication_date_book }}</h2>
+                    {% else %}
+                    <h2 class="book-info"> Publication Date: Unknown</h2>
+                    {% endif %}
                     <h2 class="book-info"> Reviews: {{ book.reviews_counter }}</h2>
-                    <h2 class="book-info"> Average grade: 8</h2>
+                    <h2 class="book-info"> Average grade: {{ average_grade }}</h2>
                 </div>
                 <div class="book-description">
                     <h2>Book Description</h2>
+                    {% if book.description %}
                     <p>{{ book.description }}</p>
+                    {% endif %}
                 </div>
             </div>
             <div class="buttons-container-details">
-                <a>
-                    <button type="button">Write Review</button>
-                </a>
-                <a>
+                {% if request.user.is_authenticated or request.user.is_superuser %}
+                    <a href="{% url 'review-creation' pk=book.pk %}">
+                        <button type="button">Write Review</button>
+                    </a>
+                {% endif %}
+                <a href="{% url 'book-reviews-display' pk=book.pk %}">
                     <button type="button">View Reviews</button>
                 </a>
                 {% if request.user == book.created_by or request.user.is_superuser%}

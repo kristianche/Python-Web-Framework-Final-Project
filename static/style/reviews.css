@@ -1,0 +1,51 @@
+.reviews-container{
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: auto;
+    margin: 100px 50px;
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+}
+
+.review-container{
+    background-color: #D3D3D3;
+    border: solid black 3px;
+    border-radius: 20px;
+    height: 250px;
+    display: grid;
+    grid-template-rows: 80% 20%;
+}
+
+.review{
+    background-color: white;
+    width: 95%;
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+.review p{
+    margin-left: 20px;
+    font-family: Brush Script Std cursive;
+}
+
+span{
+   margin-left: 500px;
+    margin-top: 10px;
+}
+
+.review-footer{
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+
+.review-buttons button{
+    width: 60px;
+    height: 30px;
+    font-size: 15px;
+    margin-top: 15px;
+    margin-left: 30px;
+    text-align: center;
+    padding: 10px;
+}
+
+

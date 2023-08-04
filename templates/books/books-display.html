@@ -10,7 +10,7 @@
 
     <main>
         {% include 'components/searchbar-and-create-button.html' %}
-        {% if request.user.is_authenticated or request.user.is_superuser%}
+        {% if request.user.is_authenticated or request.user.is_superuser %}
             <a href="{% url 'book-create' %}">
                 <button id='CreateButton' type="submit">{{ button_title }}</button>
             </a>
@@ -37,7 +37,7 @@
                 <a href="{% url 'book-details' pk=book.pk %}">
                     <button type="submit">Details</button>
                 </a>
-                <a>
+                <a href="{% url 'review-creation' pk=book.pk %}">
                     <button type="submit">Write Review</button>
                 </a>
 

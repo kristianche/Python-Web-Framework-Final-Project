@@ -40,15 +40,19 @@ urlpatterns = [
         ])),
     ])),
     path('profile/', include([
-        path('<int:pk>', include([
-            path('', views.ProfileDetails.as_view(), name='profile-details'),
+        path('<int:pk>/', include([
+            path('', views.profile_details, name='profile-details'),
             path('edit/', views.ProfileEdit.as_view(), name='profile-edit'),
-            path('edit/', views.ProfileDelete.as_view(), name='profile-delete')
+            path('delete/', views.profile_delete, name='profile-delete')
         ])),
         path('create/', views.ProfileCreate.as_view(), name='profile-create')
     ])),
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', views.Logout.as_view(), name='logout'),
+    path('review_for_book/<int:pk>', views.review_creation, name='review-creation'),
     path('view_books_by_author/<int:pk>', views.books_by_author, name='books-by-author'),
-    path('view_books_by_publisher/<int:pk>', views.books_by_publisher, name='books-by-publisher')
+    path('view_books_by_publisher/<int:pk>', views.books_by_publisher, name='books-by-publisher'),
+    path('view_reviews_for_book/<int:pk>', views.view_book_reviews, name='book-reviews-display'),
+    path('view_reviews_for_book/<int:pk>/edit', views.review_edit, name='book-reviews-edit'),
+    path('view_reviews_for_book/<int:pk>/delete', views.review_delete, name='book-reviews-delete')
 ]

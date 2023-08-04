@@ -11,9 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
 from django.urls import reverse_lazy
-
 import BooksFace.BooksFaceApp.validators
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -44,7 +42,7 @@ INSTALLED_APPS = [
 
     'BooksFace.BooksFaceApp',
 
-    'rest_framework'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -110,18 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
-    {
-        'NAME': 'BooksFace.BooksFaceApp.validators.check_password_number',
-    },
-    {
-        'NAME': 'BooksFace.BooksFaceApp.validators.check_password_special_symbol',
-    },
-    {
-        'NAME': 'BooksFace.BooksFaceApp.validators.check_password_lowercase_letter',
-    },
-    {
-        'NAME': 'BooksFace.BooksFaceApp.validators.check_password_capital_letter',
-    },
 ]
 
 
@@ -135,7 +121,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -157,3 +142,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGOUT_REDIRECT_URL = reverse_lazy('home-page')
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('home-page')
+
