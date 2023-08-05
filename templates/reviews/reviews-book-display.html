@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'style/reviews.css' %}">
@@ -22,7 +23,7 @@
                 </div>
                 <div class="review-footer">
                     <div class="review-buttons">
-                        {% if request.user == review.author or request.user.is_superuser %}
+                        {% if request.user == review.author or request.user.is_superuser or request.user|in_group:"Reviews Management" or request.user|in_group:"Global Management"%}
                         <a href="{% url 'book-reviews-edit' pk=review.pk %}">
                             <button>Edit</button>
                         </a>

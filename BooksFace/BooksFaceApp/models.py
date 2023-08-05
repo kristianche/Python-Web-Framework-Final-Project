@@ -41,8 +41,8 @@ class Profile(models.Model):
     )
 
     sex = models.CharField(
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         choices=SEX_CHOICES
     )
 
@@ -95,8 +95,8 @@ class Author(models.Model):
     LAST_NAME_STARTS_WITH_CAPITAL_LETTER = 'The last name of the author must start with a capital letter!'
 
     image = models.URLField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         unique=True
     )
     first_name = models.CharField(
@@ -198,8 +198,8 @@ class Publisher(models.Model):
     PUBLISHER_NAME_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE = 'The name of the publisher must start with a capital letter!'
 
     image = models.URLField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         unique=True
     )
     name = models.CharField(
@@ -425,8 +425,8 @@ class ReviewBook(models.Model):
     )
 
     grade = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         validators=[MaxValueValidator(GRADE_MAX_VALUE)],
         verbose_name='Book Grade',
     )
@@ -439,18 +439,8 @@ class ReviewBook(models.Model):
 
     )
 
-    likes = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-        verbose_name='Review Likes',
-        default=0
-    )
-
     class Meta:
         ordering = ['review_date']
-
-    def likes_increase(self):
-        self.likes += 1
 
     def __str__(self):
         return f'{self.author}-{self.book.title}-{self.grade}'

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'style/details.css' %}">
@@ -54,7 +55,7 @@
                 <a href="{% url 'books-by-publisher' pk=publisher.pk %}" style="grid-column: span 2; margin-left: 90px">
                     <button type="button">View Books</button>
                 </a>
-                {% if request.user == publisher.created_by or request.user.is_superuser %}
+                {% if request.user == publisher.created_by or request.user.is_superuser or request.user|in_group:"Publishers Management" or request.user|in_group:"Global Management" %}
                     <a href="{% url 'publisher-edit' pk=publisher.pk %}">
                         <button type="submit">Edit</button>
                     </a>
