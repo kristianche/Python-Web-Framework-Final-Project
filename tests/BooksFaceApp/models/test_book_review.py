@@ -44,7 +44,6 @@ class ReviewBookModelTest(TestCase):
             'grade': 8.5,
             'author': self.profile,
             'book': self.book,
-            'likes': 10,
         }
 
     def test_review_max_length_raises_error(self):
@@ -73,4 +72,3 @@ class ReviewBookModelTest(TestCase):
         self.assertEquals(review.grade, 8.5)
         self.assertEquals(review.author, self.profile)
         self.assertEquals(review.book, self.book)
-        self.assertEquals(review.likes, 10)

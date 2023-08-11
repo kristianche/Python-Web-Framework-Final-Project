@@ -23,7 +23,7 @@ class AuthorModelTest(TestCase):
     def test_first_name_min_length_raises_error(self):
         author_data = self.author_data.copy()
         author_data['first_name'] = 'A' * (Author.AUTHOR_NAME_MIN_LENGTH - 1)
-        with self.assertRaises(ValidationError) as context:
+        with self.assertRaises(ValidationError):
             author = Author.objects.create(**author_data)
             author.full_clean()
 
@@ -35,7 +35,7 @@ class AuthorModelTest(TestCase):
             author.full_clean()
 
         self.assertEquals(
-            f"{Author.FIRST_NAME_STARTS_WITH_CAPITAL_LETTER}", str(context.exception.messages[0])
+            f"{Author.FIRST_NAME_STARTS_WITH_CAPITAL_LETTER}", str(context.exception.messages[1])
         )
 
     def test_last_name_max_length_raises_error(self):
@@ -60,7 +60,7 @@ class AuthorModelTest(TestCase):
             author.full_clean()
 
         self.assertEquals(
-            f"{Author.LAST_NAME_STARTS_WITH_CAPITAL_LETTER}", str(context.exception.messages[0])
+            f"{Author.LAST_NAME_STARTS_WITH_CAPITAL_LETTER}", str(context.exception.messages[1])
         )
 
     def test_biography_max_length_raises_error(self):

@@ -1,9 +1,7 @@
 from datetime import date
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.core.validators import MaxLengthValidator, MinLengthValidator, MinValueValidator, MaxValueValidator
-from django.contrib.auth import models as auth_model
+from django.core.validators import MaxLengthValidator, MinLengthValidator, MaxValueValidator
 from .validators import CheckStartsWithCapitalLetter
 
 
@@ -418,7 +416,6 @@ class Book(models.Model):
 
 class ReviewBook(models.Model):
 
-
     GRADE_MIN_VALUE = 0
     GRADE_MAX_VALUE = 10
     REVIEW_MAX_LENGTH = 3000
@@ -466,4 +463,3 @@ class ReviewBook(models.Model):
 
     def __str__(self):
         return f'{self.author}-{self.book.title}-{self.grade}'
-

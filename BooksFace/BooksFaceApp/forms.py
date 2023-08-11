@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.forms import ModelChoiceField
 from .models import Book, Author, Publisher, Profile, ReviewBook
 from django.contrib.auth.forms import UserCreationForm
 
@@ -283,12 +282,3 @@ class PublisherSearchForm(forms.Form):
         max_length=Publisher.PUBLISHER_NAME_MAX_LENGTH,
         widget=forms.TextInput(attrs={'placeholder': 'Search Publisher'})
     )
-
-
-
-
-
-
-
-
-
