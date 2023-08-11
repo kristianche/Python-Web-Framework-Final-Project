@@ -15,6 +15,7 @@
         <a href="{% url 'review-creation' pk=book.pk %}">
             <button id="CreateButton" style='margin-left: 43%; margin-bottom: 50px' type="submit">Create Review</button>
         </a>
+        {% if reviews %}
         <div class = 'reviews-container'>
             {% for review in reviews %}
             <div class="review-container">
@@ -23,7 +24,7 @@
                 </div>
                 <div class="review-footer">
                     <div class="review-buttons">
-                        {% if request.user == review.author or request.user.is_superuser or request.user|in_group:"Reviews Management" or request.user|in_group:"Global Management"%}
+                        {% if request.user.username == review.author or request.user.is_superuser or request.user|in_group:"Reviews Management" or request.user|in_group:"Global Management"%}
                         <a href="{% url 'book-reviews-edit' pk=review.pk %}">
                             <button>Edit</button>
                         </a>
@@ -39,5 +40,8 @@
             </div>
             {% endfor %}
         </div>
+        {% else %}
+            <h1 style=" margin: 200px 50px; font-size: 70px; text-align: center">There are no created reviews for <i>{{ book.title }}</i>!</h1>
+        {% endif %}
     </main>
 {% endblock %}

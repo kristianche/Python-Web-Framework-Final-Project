@@ -25,6 +25,28 @@ class Profile(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    first_name = models.CharField(
+        null=False,
+        blank=False,
+        verbose_name='First Name',
+        validators=[CheckStartsWithCapitalLetter(text=FIRST_NAME_CHECK_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE),
+                    MinLengthValidator(NAMES_MIN_LENGTH),
+                    MaxLengthValidator(NAMES_MAX_LENGTH),
+                    ],
+        default='First Name'
+    )
+
+    last_name = models.CharField(
+        null=False,
+        blank=False,
+        verbose_name='Last Name',
+        validators=[CheckStartsWithCapitalLetter(text=LAST_NAME_CHECK_STARTS_WITH_CAPITAL_LETTER_ERROR_MESSAGE),
+                    MinLengthValidator(NAMES_MIN_LENGTH),
+                    MaxLengthValidator(NAMES_MAX_LENGTH),
+                    ],
+        default='Last Name'
+    )
+
     USERNAME_FIELD = 'user.username'
 
     profile_image = models.URLField(

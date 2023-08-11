@@ -195,6 +195,8 @@ class ProfileEditForm(forms.ModelForm):
         exclude = ('user', )
 
         labels = {
+            'first_name': '',
+            'last_name': '',
             'profile_image': '',
             'city': '',
             'country': '',
@@ -204,6 +206,8 @@ class ProfileEditForm(forms.ModelForm):
         }
 
         widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
             'profile_image': forms.URLInput(attrs={'placeholder': 'Image Url'}),
             'country': forms.TextInput(attrs={'placeholder': 'Country'}),
             'city': forms.TextInput(attrs={'placeholder': 'City/Town/Village'}),

@@ -213,7 +213,6 @@ class PublisherCreate(generic.CreateView, LoginRequiredMixin):
             return self.form_invalid(form)
 
         form.instance.created_by = self.request.user.username
-
         return super().form_valid(form)
 
 
@@ -262,6 +261,18 @@ class ProfileCreate(generic.CreateView):
         result = super().form_valid(form)
 
         login(self.request, self.object)
+        profile, created = Profile.objects.get_or_create(
+            user=self.object,
+            defaults={
+                'first_name': form.cleaned_data['first_name'],
+                'last_name': form.cleaned_data['last_name']
+            }
+        )
+
+        if not created:
+            profile.first_name = form.cleaned_data['first_name']
+            profile.last_name = form.cleaned_data['last_name']
+            profile.save()
         
         return result
 

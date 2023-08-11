@@ -1,6 +1,13 @@
+import os
 from pathlib import Path
 from django.urls import reverse_lazy
 import BooksFace.BooksFaceApp.validators
+from dotenv import load_dotenv, find_dotenv
+
+
+env_path = find_dotenv('envs/.env')
+
+load_dotenv(env_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,9 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-717i_tnk7of^g=cwjfnf+gk(g(+3rh!#8j=zd_+kt1npfc=xrg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(' ')
 
 
 # Application definition
@@ -71,13 +78,15 @@ WSGI_APPLICATION = 'BooksFace.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "BooksFaceDB",
-        "USER": "postgres-user",
-        "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": "5432",
+        'NAME': os.getenv('DB_NAME', 'BooksFaceDB'),
+        'USER': os.getenv('DB_USER', 'postgres-user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
+
+print(DATABASES)
 
 
 # Password validation

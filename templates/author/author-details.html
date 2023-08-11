@@ -39,7 +39,7 @@
                 <a href="{% url 'books-by-author' pk=author.pk %}" style="grid-column: span 2; margin-left: 90px">
                     <button type="button">View Books</button>
                 </a>
-                {% if request.user == author.created_by or request.user.is_superuser or request.user|in_group:"Authors Management" or request.user|in_group:"Global Management"%}
+                {% if request.user.username == author.created_by or request.user.is_superuser or request.user|in_group:"Authors Management" or request.user|in_group:"Global Management"%}
                     <a href="{% url 'author-edit' pk=author.pk %}">
                         <button type="submit">Edit</button>
                     </a>
