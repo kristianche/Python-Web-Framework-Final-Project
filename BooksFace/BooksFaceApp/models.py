@@ -168,6 +168,7 @@ class Author(models.Model):
         null=False,
         blank=False,
         verbose_name='Created by',
+        editable=False
     )
 
     birthday = models.DateField(
@@ -283,6 +284,7 @@ class Publisher(models.Model):
         null=False,
         blank=False,
         verbose_name='Created by',
+        editable=False
     )
 
     def __str__(self):
@@ -395,13 +397,15 @@ class Book(models.Model):
         null=True,
         blank=True,
         default=0,
-        verbose_name='Reviews'
+        verbose_name='Reviews',
+        editable=False
     )
 
     created_by = models.CharField(
         null=False,
         blank=False,
         verbose_name='Created by',
+        editable=False
     )
 
     def reviews_counter_increase(self):
@@ -432,7 +436,8 @@ class ReviewBook(models.Model):
     author = models.CharField(
         null=False,
         blank=False,
-        verbose_name='Review Author'
+        verbose_name='Review Author',
+        editable=False
     )
 
     review = models.TextField(
