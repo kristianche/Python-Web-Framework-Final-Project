@@ -48,9 +48,9 @@ button{
     width: 80%;
     height: 40%;
     padding: 12px 20px;
-    border-radius: 30px; /* Make the button round */
-    background-color: gray; /* Blue color for the button, change as per your preference */
-    color: #fff; /* Text color */
+    border-radius: 30px;
+    background-color: gray;
+    color: #fff;
     font-size: 18px;
     border: none;
     cursor: pointer;

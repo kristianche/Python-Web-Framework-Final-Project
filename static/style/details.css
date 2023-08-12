@@ -12,7 +12,7 @@
 }
 
 .image-container-details img{
-    width: 350px;
+    width: 300px;
     padding: 5px;
 }
 
@@ -33,7 +33,7 @@
 
 .text-container{
     display: grid;
-    grid-template-columns: 800px 200px;
+    grid-template-columns: 650px 350px;
     grid-column-gap: 200px;
 }
 
@@ -94,5 +94,6 @@
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 10px;
 }
 

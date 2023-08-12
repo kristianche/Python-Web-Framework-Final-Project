@@ -29,13 +29,14 @@
 }
 
 span{
-   margin-left: 500px;
+    margin-left: 300px;
     margin-top: 10px;
+
 }
 
 .review-footer{
     display: grid;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 30% 70%;
 }
 
 .review-buttons button{
@@ -45,7 +46,14 @@ span{
     margin-top: 15px;
     margin-left: 30px;
     text-align: center;
-    padding: 10px;
+    padding: 5px;
+    border-radius: 30px;
+    background-color: gray;
+    color: white;
+}
+
+.reviews-container button:hover{
+    background-color: black;
 }
 
 
