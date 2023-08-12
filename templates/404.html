@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Not Found</title>
+    <style>
+        h2{
+            font-size: 40px;
+        }
+        h1{
+            font-size: 50px;
+        }
+        p{
+            font-size: 30px;
+        }
+        a{
+          text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>404: Lost in BooksFace</h1>
+    <p><b>Oops, something went wrong!</b> <i>Couldn't find the page you are looking for!</i></p>
+    <h2 ><a href="{% url 'home-page' %}">Go back to home page!</a></h2>
+</body>
+</html>
