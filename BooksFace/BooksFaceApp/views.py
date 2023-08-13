@@ -227,7 +227,7 @@ class PublisherDelete(generic.DeleteView, LoginRequiredMixin):
     model = Publisher
     form_class = forms.PublisherDeleteForm
     template_name = 'publisher/publisher-delete.html'
-    success_url = reverse_lazy('publisher-delete')
+    success_url = reverse_lazy('publishers-display')
 
     def get_form_kwargs(self):
         instance = self.get_object()

@@ -11,7 +11,7 @@
         <form action="{% url 'profile-delete' pk=request.user.pk %}" method="post">
             <h1 style="text-align: center; font-size: 40px">Are you sure you want to delete this profile</h1>
             {% csrf_token %}
-            <button class='form-button' style="margin-left: 10%;" type="submit">YES</button>
+            <button class='form-button' type="submit">YES</button>
         </form>
     </div>
 {% endblock %}

@@ -16,12 +16,12 @@
                 <div class="text-container-details">
                     <h2 class="book-info"> Name: {{ publisher.name }}</h2>
                     {% if publisher.website %}
-                        <h2 class="book-info"> Website: <a href={{ publisher.website }}>{{ publisher.website }}</a></h2>
+                        <h2 class="book-info"> Website: <a style="text-decoration: none; color: white;" href={{ publisher.website }}>{{ publisher.website }}</a></h2>
                     {% else %}
                         <h2 class="book-info"> Website: Unknown</h2>
                     {% endif %}
                     {% if publisher.email %}
-                        <h2 class="book-info">  Email: <a href={{ publisher.email }}>{{ publisher.email }}</a></h2>
+                        <h2 class="book-info">  Email: <a style="text-decoration: none; color: white;" href={{ publisher.email }}>{{ publisher.email }}</a></h2>
                     {% else %}
                         <h2 class="book-info">  Email: Unknown</h2>
                     {% endif %}

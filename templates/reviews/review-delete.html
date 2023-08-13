@@ -11,7 +11,7 @@
         <form action="{% url 'book-reviews-delete' pk=review.pk %}" method="post">
             {{ form.as_p}}
             {% csrf_token %}
-            <button class='form-button' style="margin-left: 10%;" type="submit">Delete</button>
+            <button class='form-button' type="submit">Delete</button>
         </form>
     </div>
 {% endblock %}

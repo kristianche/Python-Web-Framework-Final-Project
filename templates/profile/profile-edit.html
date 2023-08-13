@@ -11,7 +11,7 @@
         <form action="{% url 'profile-edit' pk=profile.pk %}" method="post">
             {{ form.as_p}}
             {% csrf_token %}
-            <button class='form-button' style="margin-left: 10%;" type="submit">Edit</button>
+            <button class='form-button'  type="submit">Edit</button>
         </form>
     </div>
 {% endblock %}
