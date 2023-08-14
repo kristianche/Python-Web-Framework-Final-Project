@@ -256,21 +256,7 @@ class ProfileCreate(generic.CreateView):
 
     def form_valid(self, form):
         result = super().form_valid(form)
-
         login(self.request, self.object)
-        profile, created = Profile.objects.get_or_create(
-            user=self.object,
-            defaults={
-                'first_name': form.cleaned_data['first_name'],
-                'last_name': form.cleaned_data['last_name']
-            }
-        )
-
-        if not created:
-            profile.first_name = form.cleaned_data['first_name']
-            profile.last_name = form.cleaned_data['last_name']
-            profile.save()
-        
         return result
 
 
@@ -292,7 +278,6 @@ def profile_delete(request, pk):
     if request.method == 'POST':
         logout(request)
         profile.delete()
-        user.delete()
         return redirect('home-page')
 
     context = {

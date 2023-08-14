@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'BooksFace.BooksFaceApp',
+    'BooksFace.BooksFaceApp.apps.BooksFaceAppConfig',
 
     'rest_framework',
 ]

@@ -172,15 +172,6 @@ class ProfileCreateForm(UserCreationForm):
             'password2': ''
         }
 
-    def save(self, commit=True):
-        user = super().save(commit=commit)
-        profile = Profile(
-            user=user,
-        )
-        if commit:
-            profile.save()
-        return user
-
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if email and User.objects.filter(email=email).exists():
